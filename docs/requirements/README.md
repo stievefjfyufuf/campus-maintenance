@@ -5,7 +5,7 @@ Artefak requirements engineering disimpan dengan urutan proses di `docs/software
 | Tahap | Artefak | Status |
 |---|---|---|
 | 01 - Inception dan Stakeholder | [`../software-engineering/01-inception.md`](../software-engineering/01-inception.md) | Draft - menunggu human review |
-| 02 - Elicitation | Belum dibuat | Pending |
+| 02 - Elicitation | [`../software-engineering/02-elicitation.md`](../software-engineering/02-elicitation.md) | In progress - menunggu stakeholder response |
 | 03 - Specification | Belum dibuat | Pending |
 | 04 - Prioritization | Belum dibuat | Pending |
 | 05 - Validation dan Change | Belum dibuat | Pending |

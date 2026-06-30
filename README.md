@@ -4,7 +4,7 @@ Repository proyek **Campus Service Request and Maintenance System** untuk mata k
 
 ## Status
 
-Fondasi repository telah dibuat menggunakan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. Implementasi fitur belum dimulai. Tahap substantif berikutnya adalah **01 - Inception dan Stakeholder**.
+Fondasi repository telah dibuat menggunakan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. Draft **01 - Inception dan Stakeholder** telah dibuat dan sedang menunggu human review. Implementasi fitur belum dimulai.
 
 ## Menjalankan Proyek
 

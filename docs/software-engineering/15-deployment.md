@@ -75,3 +75,14 @@ REL-002 is the active deployed baseline for CR-006 / ISSUE-011. REL-001 remains 
 # CR-008 Deployment Audit Addendum
 
 On 2 July 2026, the existing REL-002 URL was reverified through a read-only browser smoke test. The public React frontend loaded, D1-backed reference data loaded, and the ADMIN dashboard rendered successfully. CR-008 does not require or claim a new deployment because it changes repository documentation only; REL-002 remains the active runtime baseline and REL-001 remains its rollback version.
+# REL-003 — CR-009 UI and Login Experience
+
+REL-003 deployed successfully on 2 July 2026 to `https://campus-maintenance.stievefjfyufuf.workers.dev`.
+
+- Worker version: `e1d73d06-c410-4256-811b-99a38e7d37a1`
+- Tests: 26/26 pass; lint 0 errors; production build pass.
+- Production smoke: login landing, dark mode, demo entry, D1 reference data, admin dashboard, and technician workspace pass.
+- Google OAuth routes are deployed but remain disabled until `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are configured as Worker secrets.
+- Rollback: Cloudflare version `fb4c4545-7f09-4560-bca4-fe2598780926` (REL-002); no D1 rollback required.
+
+REL-003 is the active runtime baseline for the polished academic demo. Google OAuth credential activation is a pending operational configuration item, not a hidden pass.

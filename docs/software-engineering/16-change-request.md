@@ -20,3 +20,4 @@
 | CR-006 | Complete Step 8–10 artifacts and expose dashboard metrics in the UI | Bug fix / documentation correction | Stieve | Approved and applied in REL-002 | REL-001 -> REL-002 | `changes/CR-006.md` |
 | CR-007 | Fill repository placeholder documentation and local skill files | Documentation completion / repository hygiene | Stieve | Approved and applied; documentation-only | REL-002 documentation only | `changes/CR-007.md` |
 | CR-008 | Remove obsolete placeholders, complete test folders, and verify Cloudflare demo | Repository hygiene / release verification | Stieve | Approved and applied; runtime unchanged | REL-002 documentation and verification | `changes/CR-008.md` |
+| CR-009 | Modernize UI, add dark mode, role dashboards, and Google OAuth entry | Feature addition / UI modernization | Stieve | Applied in REL-003; Google credentials pending | REL-002 → REL-003 | `changes/CR-009.md` |

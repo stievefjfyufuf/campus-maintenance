@@ -146,3 +146,6 @@ Failed requests retain the current role and filters, announce a concise error in
 - API-018 currently returns total, closed, in-progress, overdue, and `byStatus`; richer category, priority, trend, and workload metrics remain a known API gap and are not invented in UI.
 - UI-006–010 remain design-ready backlog areas; CR-006 selects only UI-005 implementation.
 - Handoff to Step 9: create a reviewable issue for UI-005 with no database/API scope expansion.
+# CR-009 UI Addendum — REL-003
+
+`UI-006` adds a split login landing page with Google OAuth availability state and explicit academic demo fallback. `UI-007` adds a persistent light/dark theme control. `UI-008` adds role-oriented workspace headings and KPI cards for PELAPOR, ADMIN, TEKNISI, and MANAJER while preserving the existing workflow actions. The layout is responsive and keeps labeled controls, focus indicators, loading, empty, error, and success states.

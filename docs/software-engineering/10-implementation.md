@@ -84,3 +84,6 @@ Latest automated result: `npm.cmd test` passes 2 files, 26/26 tests.
 # CR-008 Repository Maintenance Addendum
 
 CR-008 made no runtime implementation change. Obsolete `.gitkeep` placeholders were removed after verifying each directory had a real artifact, and reviewer guidance was added under `tests/unit`, `tests/integration`, and `tests/acceptance`. Frontend, Worker API, D1 schema, dependencies, and Cloudflare configuration remain unchanged.
+# CR-009 / ISSUE-012 Implementation Addendum
+
+Changed `src/App.tsx`, `src/App.css`, `src/index.css`, and `worker/index.ts`. Added a login landing surface, OAuth configuration/login/callback/session/logout routes, persistent dark mode, Google profile display, demo role selection, role-specific workspace headings/KPIs, and a responsive visual system. Existing report lifecycle endpoints and D1 schema remain unchanged. OAuth secrets are not stored in source control.

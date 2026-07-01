@@ -50,3 +50,12 @@ CR-006 automated regression passes. The previous review gap for dashboard role v
 | `git diff --check` | Pass; line-ending warning only |
 
 Wrangler could not write its optional debug log outside the workspace sandbox, but the production build completed with exit code 0.
+# CR-009 Automated Test Addendum
+
+| Command | Result |
+|---|---|
+| `npm.cmd test` | Pass: 2 files, 26/26 tests |
+| `npm.cmd run lint` | Pass: 0 errors; 2 generated Cloudflare warnings |
+| `npm.cmd run build` | Pass: Worker and client production bundles |
+
+The existing domain and dashboard regression suite passes unchanged, confirming the REL-002 workflow remains compatible.

@@ -108,3 +108,8 @@ ISSUE-011 ─> ISSUE-012/013/014/015 remain independent backlog candidates
 ## Handoff to Step 10
 
 Implement only ISSUE-011. Any discovered API or authorization defect must be recorded and routed upstream rather than silently expanding the issue.
+# CR-009 Issue Addendum
+
+## ISSUE-012 — Modernize authenticated demo workspace
+
+Implement UI-006–008, Google OAuth entry/config/session/logout routes, persistent dark mode, role-oriented workspace composition, responsive styling, regression verification, Cloudflare deployment, and GitHub demo-link update. Google OAuth activation depends on Cloudflare secrets and must degrade safely to the labeled demo mode.

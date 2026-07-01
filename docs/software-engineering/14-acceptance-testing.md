@@ -58,3 +58,14 @@ REL-002 is promoted as the active deployed baseline. Future production feedback 
 - [x] No personal data was submitted during read-only smoke verification.
 
 Decision: **accepted**. REL-002 behavior remains unchanged.
+# CR-009 Acceptance Addendum
+
+- [x] Production login landing renders with Google availability state and labeled demo fallback.
+- [x] Theme toggle changes the document theme to dark and remains keyboard-addressable.
+- [x] Demo entry opens the PELAPOR workspace and loads D1 categories/locations.
+- [x] ADMIN selection renders `Pusat Kendali Admin` and the authorized dashboard region.
+- [x] TEKNISI selection renders `Meja Kerja Teknisi` without exposing the manager dashboard.
+- [x] Existing workflow controls remain role-dependent.
+- [ ] Real Google account callback: blocked pending `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` secrets.
+
+Decision: **accepted with one external-configuration note**. The deployed academic demo is usable; Google OAuth activation remains pending credentials.

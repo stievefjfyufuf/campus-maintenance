@@ -1,10 +1,21 @@
 # Campus Maintenance
 
-Repository proyek **Campus Service Request and Maintenance System** untuk mata kuliah Software Engineering.
+Repository **Campus Service Request and Maintenance System** untuk mata kuliah Software Engineering.
 
-## Status
+## Demo Aktif
 
-Baseline aktif adalah **REL-002**. MVP menggunakan React, TypeScript, Vite, Hono, Cloudflare Workers, D1, Wrangler, dan Vitest. Workflow Software Engineering Step 1–16 telah dijalankan sampai deployment production Step 15 dan change-control Step 16.
+[Buka aplikasi Campus Maintenance](https://campus-maintenance.stievefjfyufuf.workers.dev)
+
+Baseline aktif adalah **REL-003** dengan React, TypeScript, Vite, Hono, Cloudflare Workers, D1, Wrangler, dan Vitest.
+
+REL-003 mencakup:
+
+- UI responsif dengan light/dark mode.
+- Login landing dan Google OAuth routes.
+- Fallback demo akademik dengan pemilihan role.
+- Workspace khusus Pelapor, Administrator, Teknisi, dan Manajer.
+- Workflow laporan `SUBMITTED` sampai `CLOSED`.
+- Dashboard operasional berbasis data D1.
 
 ## Menjalankan Proyek
 
@@ -13,45 +24,33 @@ npm install
 npm run dev
 ```
 
-## Pemeriksaan Awal
+## Pemeriksaan
 
 ```bash
+npm test
 npm run lint
 npm run build
-npm test
 ```
 
-Pada PowerShell Windows, jika `npm.ps1` diblokir execution policy, gunakan bentuk berikut:
+Pada PowerShell Windows gunakan `npm.cmd` bila `npm.ps1` diblokir execution policy.
 
-```bash
-npm.cmd test
-npm.cmd run lint
-npm.cmd run build
-```
+## Struktur
 
-## Struktur Utama
-
-- `skills/`: reusable AI skills lokal Step 1–15.
-- `docs/software-engineering/`: artefak utama Step 1–16 dan change request.
-- `docs/requirements/`: index requirements engineering.
-- `docs/design/`: index artefak desain yang menunjuk Step 6–8.
-- `docs/testing/`: index artefak testing yang menunjuk Step 12–14.
-- `docs/deployment/`: index deployment/release yang menunjuk Step 15.
 - `src/`: frontend React.
-- `worker/`: backend Cloudflare Worker.
-- `database/migrations/`: migration Cloudflare D1.
-- `tests/`: unit dan regression tests.
-- `evidence/`: invocation AI, output awal, dan human review evidence.
+- `worker/`: backend Cloudflare Worker/Hono.
+- `database/migrations/`: schema Cloudflare D1.
+- `tests/`: unit, regression, integration, dan acceptance guidance.
+- `docs/software-engineering/`: artefak Step 1–16 dan change request.
+- `skills/`: reusable AI skills lokal.
 
-## Deployment
+## Release
 
-[Aplikasi publik](https://campus-maintenance.stievefjfyufuf.workers.dev) berjalan di Cloudflare Workers dengan database D1 region APAC.
+- REL-001: baseline MVP.
+- REL-002: dashboard admin/manajer dan regression coverage.
+- REL-003: modern UI, dark mode, login landing, role workspaces, dan OAuth routes.
 
-Release aktif:
+## Google Login
 
-- REL-001: baseline MVP awal.
-- REL-002: dashboard metrics UI untuk admin/manajer, automated dashboard tests, dan production smoke test.
+Google OAuth membutuhkan `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` sebagai Cloudflare Worker secrets. Secret tidak boleh disimpan di Git. Selama secret belum dikonfigurasi, aplikasi menampilkan status yang jelas dan menyediakan mode demo akademik.
 
-## Known Limitations
-
-Autentikasi menggunakan role selector dan pengguna dummy untuk demonstrasi akademik, bukan untuk produksi nyata. Upload, email, QR, inventory, vendor, aplikasi native, dan autentikasi produksi tetap di luar baseline.
+Role selector demo bukan sistem otorisasi produksi. Data demo harus tetap sintetis dan tidak memuat data pribadi nyata.

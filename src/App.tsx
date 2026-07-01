@@ -9,6 +9,7 @@ import {
 } from './dashboard'
 
 type User = { id: string; name: string; role: string }
+type GoogleProfile = { name: string; email: string; picture?: string }
 type Option = { id: string; name: string }
 type Report = {
   id: string
@@ -28,6 +29,12 @@ const fallbackUsers: User[] = [
 ]
 
 export default function App() {
+  const [entered, setEntered] = useState(false)
+  const [googleEnabled, setGoogleEnabled] = useState(false)
+  const [profile, setProfile] = useState<GoogleProfile | null>(null)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() =>
+    localStorage.getItem('campus-theme') === 'dark' ? 'dark' : 'light',
+  )
   const [users, setUsers] = useState<User[]>(fallbackUsers)
   const [user, setUser] = useState<User>(fallbackUsers[0])
   const [reports, setReports] = useState<Report[]>([])
@@ -42,6 +49,24 @@ export default function App() {
   const [dashboardError, setDashboardError] = useState('')
 
   const canViewDashboard = canViewDashboardRole(user.role)
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('campus-theme', theme)
+  }, [theme])
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/auth/config').then((response) => response.json()),
+      fetch('/api/auth/session').then((response) => response.json()),
+    ]).then(([config, session]) => {
+      setGoogleEnabled(Boolean(config.googleEnabled))
+      if (session.authenticated) {
+        setProfile(session.profile)
+        setEntered(true)
+      }
+    }).catch(() => setGoogleEnabled(false))
+  }, [])
 
   const request = useCallback(
     async (path: string, init?: RequestInit) => {
@@ -148,17 +173,54 @@ export default function App() {
 
   const dashboardMetrics = buildDashboardMetrics(dashboard)
   const statusDistribution = normalizeStatusDistribution(dashboard)
+  const activeReports = reports.filter((report) => !['RESOLVED', 'CLOSED'].includes(report.status)).length
+  const roleCopy: Record<string, { title: string; subtitle: string; action: string }> = {
+    PELAPOR: { title: 'Ruang Pelapor', subtitle: 'Pantau laporan Anda dan sampaikan kebutuhan fasilitas dengan cepat.', action: 'Buat laporan' },
+    ADMIN: { title: 'Pusat Kendali Admin', subtitle: 'Tinjau antrean, prioritaskan masalah, dan arahkan tim teknis.', action: 'Tinjau antrean' },
+    TEKNISI: { title: 'Meja Kerja Teknisi', subtitle: 'Fokus pada tugas yang ditugaskan dan perbarui progres lapangan.', action: 'Lihat tugas aktif' },
+    MANAJER: { title: 'Dashboard Manajer', subtitle: 'Lihat kesehatan operasional dan pola layanan fasilitas kampus.', action: 'Pantau performa' },
+  }
+  const workspace = roleCopy[user.role] || roleCopy.PELAPOR
+
+  if (!entered) {
+    return (
+      <div className="auth-shell">
+        <button className="theme-toggle floating" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Ganti tema">
+          {theme === 'dark' ? '☀' : '☾'}
+        </button>
+        <section className="auth-card">
+          <div className="auth-brand"><span>CC</span><strong>Campus Care</strong></div>
+          <span className="eyebrow dark">CAMPUS MAINTENANCE</span>
+          <h1>Fasilitas kampus, tertangani dengan jelas.</h1>
+          <p>Masuk untuk melaporkan gangguan, menangani tugas, atau memantau layanan fasilitas dalam satu ruang kerja.</p>
+          <div className="auth-actions">
+            <a className={`google-button ${!googleEnabled ? 'disabled' : ''}`} href={googleEnabled ? '/api/auth/google' : undefined} aria-disabled={!googleEnabled}>
+              <span className="google-mark">G</span> Lanjutkan dengan Google
+            </a>
+            {!googleEnabled && <small>Google OAuth menunggu Client ID dan Client Secret di Cloudflare.</small>}
+            <div className="divider"><span>atau</span></div>
+            <button className="demo-button" onClick={() => setEntered(true)}>Masuk ke demo interaktif</button>
+          </div>
+          <p className="auth-note">Mode demo menggunakan data sintetis dan pemilihan role untuk kebutuhan penilaian akademik.</p>
+        </section>
+        <aside className="auth-visual">
+          <div className="visual-badge">LIVE · CLOUDFLARE D1</div>
+          <h2>Satu alur.<br />Empat peran.<br />Tanpa laporan terlewat.</h2>
+          <div className="visual-stats"><span><strong>24/7</strong> akses web</span><span><strong>6</strong> tahap workflow</span></div>
+        </aside>
+      </div>
+    )
+  }
 
   return (
     <div className="app-shell">
-      <header>
-        <div>
-          <span className="eyebrow">CAMPUS CARE</span>
-          <h1>Pusat Pemeliharaan Kampus</h1>
-          <p>Laporkan, pantau, dan selesaikan gangguan fasilitas dalam satu alur.</p>
-        </div>
-        <label className="role">
-          Masuk sebagai
+      <header className="topbar">
+        <div className="brand"><span>CC</span><strong>Campus Care</strong></div>
+        <div className="topbar-actions">
+          <button className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Ganti tema">{theme === 'dark' ? '☀' : '☾'}</button>
+          {profile && <div className="profile-chip">{profile.picture && <img src={profile.picture} alt="" />}<span><strong>{profile.name}</strong><small>{profile.email}</small></span></div>}
+          <label className="role">
+          Pilih role demo
           <select
             value={user.id}
             onChange={(event) =>
@@ -172,6 +234,8 @@ export default function App() {
             ))}
           </select>
         </label>
+          <button className="logout-button" onClick={() => { setEntered(false); setProfile(null); void fetch('/api/auth/logout', { method: 'POST' }) }}>Keluar</button>
+        </div>
       </header>
 
       {message && (
@@ -184,6 +248,10 @@ export default function App() {
       )}
 
       <main>
+        <section className="hero-panel">
+          <div><span className="eyebrow dark">WORKSPACE · {user.role}</span><h1>{workspace.title}</h1><p>{workspace.subtitle}</p></div>
+          <div className="hero-kpis"><article><strong>{reports.length}</strong><span>Laporan terlihat</span></article><article><strong>{activeReports}</strong><span>Perlu perhatian</span></article><article><strong>{reports.filter((item) => item.status === 'CLOSED').length}</strong><span>Ditutup</span></article></div>
+        </section>
         {canViewDashboard && (
           <section className="panel dashboard" aria-labelledby="dashboard-title">
             <div className="section-heading">

@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import type { Context } from 'hono'
 import { addBusinessDays, canTransition, newId, roles, validateReport, type ReportStatus, type Role } from './domain'
 
-type Bindings = { DB: D1Database }
+type Bindings = { DB: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string }
 type Variables = { userId: string; role: Role }
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
 
@@ -12,7 +12,7 @@ app.onError((error, c) => {
 })
 
 app.use('/api/*', async (c, next) => {
-  if (c.req.path === '/api/health' || c.req.path === '/api/users') return next()
+  if (c.req.path === '/api/health' || c.req.path === '/api/users' || c.req.path.startsWith('/api/auth/')) return next()
   const userId = c.req.header('X-User-Id')
   const role = c.req.header('X-Role') as Role | undefined
   if (!userId || !role || !roles.includes(role)) return c.json({ error: 'Identitas atau peran tidak valid.' }, 401)
@@ -23,6 +23,60 @@ app.use('/api/*', async (c, next) => {
 })
 
 app.get('/api/health', (c) => c.json({ ok: true }))
+app.get('/api/auth/config', (c) => c.json({ googleEnabled: Boolean(c.env.GOOGLE_CLIENT_ID && c.env.GOOGLE_CLIENT_SECRET) }))
+app.get('/api/auth/google', (c) => {
+  if (!c.env.GOOGLE_CLIENT_ID || !c.env.GOOGLE_CLIENT_SECRET) {
+    return c.json({ error: 'Google Login belum dikonfigurasi. Gunakan mode demo.' }, 503)
+  }
+  const state = crypto.randomUUID()
+  const callback = `${new URL(c.req.url).origin}/api/auth/google/callback`
+  const query = new URLSearchParams({
+    client_id: c.env.GOOGLE_CLIENT_ID,
+    redirect_uri: callback,
+    response_type: 'code',
+    scope: 'openid email profile',
+    state,
+    prompt: 'select_account',
+  })
+  c.header('Set-Cookie', `cm_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`)
+  return c.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${query}`)
+})
+app.get('/api/auth/google/callback', async (c) => {
+  const code = c.req.query('code')
+  const state = c.req.query('state')
+  const savedState = c.req.header('Cookie')?.match(/(?:^|; )cm_oauth_state=([^;]+)/)?.[1]
+  if (!code || !state || state !== savedState || !c.env.GOOGLE_CLIENT_ID || !c.env.GOOGLE_CLIENT_SECRET) {
+    return c.redirect('/?auth=failed')
+  }
+  const callback = `${new URL(c.req.url).origin}/api/auth/google/callback`
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ code, client_id: c.env.GOOGLE_CLIENT_ID, client_secret: c.env.GOOGLE_CLIENT_SECRET, redirect_uri: callback, grant_type: 'authorization_code' }),
+  })
+  if (!tokenResponse.ok) return c.redirect('/?auth=failed')
+  const token = await tokenResponse.json<{ access_token: string }>()
+  const profileResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', { headers: { Authorization: `Bearer ${token.access_token}` } })
+  if (!profileResponse.ok) return c.redirect('/?auth=failed')
+  const profile = await profileResponse.json<{ email: string; name: string; picture?: string }>()
+  const session = btoa(unescape(encodeURIComponent(JSON.stringify({ email: profile.email, name: profile.name, picture: profile.picture }))))
+  c.header('Set-Cookie', `cm_google=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`)
+  return c.redirect('/?auth=google')
+})
+app.get('/api/auth/session', (c) => {
+  const raw = c.req.header('Cookie')?.match(/(?:^|; )cm_google=([^;]+)/)?.[1]
+  if (!raw) return c.json({ authenticated: false })
+  try {
+    const profile = JSON.parse(decodeURIComponent(escape(atob(raw))))
+    return c.json({ authenticated: true, profile })
+  } catch {
+    return c.json({ authenticated: false })
+  }
+})
+app.post('/api/auth/logout', (c) => {
+  c.header('Set-Cookie', 'cm_google=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0')
+  return c.json({ ok: true })
+})
 app.get('/api/users', async (c) => c.json((await c.env.DB.prepare('SELECT id, name, role FROM users WHERE is_active = 1 ORDER BY role').all()).results))
 app.get('/api/categories', async (c) => c.json((await c.env.DB.prepare('SELECT * FROM categories WHERE is_active = 1 ORDER BY name').all()).results))
 app.get('/api/locations', async (c) => c.json((await c.env.DB.prepare('SELECT * FROM locations ORDER BY name').all()).results))

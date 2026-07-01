@@ -59,3 +59,6 @@ Browser-level visual checks remain useful for exact responsive layout and click-
 # CR-008 Verification Addendum
 
 CR-008 reuses TEST-001–026 as the runtime regression suite and adds release checks for placeholder removal, `git diff --check`, production page loading, D1-backed reference-data loading, and authorized dashboard visibility. No new behavior requires a new automated test ID.
+# CR-009 Test Plan Addendum
+
+Regression scope includes TEST-001–026 plus UAT checks for the OAuth-unconfigured state, demo entry, theme persistence, role workspace headings, admin dashboard authorization, responsive layout, build, and production smoke. A real Google callback is blocked until the project owner supplies Google OAuth credentials as Cloudflare secrets.

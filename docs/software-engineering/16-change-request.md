@@ -18,3 +18,4 @@
 | CR-004 | Close final Step 1–5 quality and reproducibility findings | Documentation correction / build maintenance | Stieve | Approved and applied | Steps 1–5 at commit `1c0777e` | `changes/CR-004.md` |
 | CR-005 | Correct Step 7 and execute the approved delivery lifecycle | Bug fix / delivery continuation | Stieve | Approved and applied in REL-001 | Approved Steps 1–6 and Step 7 draft | `changes/CR-005.md` |
 | CR-006 | Complete Step 8–10 artifacts and expose dashboard metrics in the UI | Bug fix / documentation correction | Stieve | Approved and applied in REL-002 | REL-001 -> REL-002 | `changes/CR-006.md` |
+| CR-007 | Fill repository placeholder documentation and local skill files | Documentation completion / repository hygiene | Stieve | Approved and applied; documentation-only | REL-002 documentation only | `changes/CR-007.md` |

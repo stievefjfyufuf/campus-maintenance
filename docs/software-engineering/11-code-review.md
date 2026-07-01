@@ -59,3 +59,15 @@ No P0, P1, or P2 findings remain. The diff does not modify Worker routes, D1 sch
 ### Decision
 
 **Approve with notes.** CR-006/ISSUE-011 is safe to commit and push to `main`. Route next to Step 12–14 before promoting a new release baseline or deploying production. REL-001 remains the active deployed baseline.
+
+### Step 13 Follow-up Review
+
+After Step 12 identified the missing automated dashboard coverage, Step 13 extracted pure dashboard helpers into `src/dashboard.ts` and added `tests/dashboard.test.ts`.
+
+| Check | Result |
+|---|---|
+| Scope | No API, database, migration, dependency, secret, or production config change |
+| Behavior | App still renders the same dashboard fields; helper centralizes role guard and numeric fallbacks |
+| Regression | `npm.cmd test` passes 26/26; lint/build pass with the same generated Wrangler log warning |
+
+Decision remains **approved with notes** for CR-006, now with automated coverage for the previously noted dashboard visibility/metric gap.

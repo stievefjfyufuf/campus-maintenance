@@ -75,3 +75,9 @@ Manual browser UAT remains a Step 14 gate before any release or deployment. A cl
 - API-018 currently exposes a subset of the richer metrics described in REQ-020/021; the UI intentionally displays only returned data.
 - No automated React integration test is added because Step 13 is outside the requested three-skill route; existing regression gates remain mandatory.
 - Handoff: send the CR-006 diff and verification result to `11-se-code-review`. REL-001 remains unchanged.
+
+### Step 13 Test-Support Follow-up
+
+Step 13 extracted dashboard role and metric derivation into `src/dashboard.ts` and added `tests/dashboard.test.ts` so ISSUE-011 has deterministic automated coverage without adding browser/test dependencies. `src/App.tsx` now consumes the helper while preserving the same rendered dashboard behavior.
+
+Latest automated result: `npm.cmd test` passes 2 files, 26/26 tests.

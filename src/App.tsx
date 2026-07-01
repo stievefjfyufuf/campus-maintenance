@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import './App.css'
+import {
+  buildDashboardMetrics,
+  canViewDashboardRole,
+  normalizeStatusDistribution,
+  type DashboardResponse,
+} from './dashboard'
 
 type User = { id: string; name: string; role: string }
 type Option = { id: string; name: string }
@@ -14,16 +20,6 @@ type Report = {
   location_name: string
   created_at: string
 }
-type Dashboard = {
-  totals: {
-    total: number | null
-    closed: number | null
-    in_progress: number | null
-    overdue: number | null
-  } | null
-  byStatus: Array<{ status: string; count: number }>
-}
-
 const fallbackUsers: User[] = [
   { id: 'usr-reporter', name: 'Rina Pelapor', role: 'PELAPOR' },
   { id: 'usr-admin', name: 'Adi Administrator', role: 'ADMIN' },
@@ -41,11 +37,11 @@ export default function App() {
   const [status, setStatus] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(true)
-  const [dashboard, setDashboard] = useState<Dashboard | null>(null)
+  const [dashboard, setDashboard] = useState<DashboardResponse | null>(null)
   const [dashboardLoading, setDashboardLoading] = useState(false)
   const [dashboardError, setDashboardError] = useState('')
 
-  const canViewDashboard = ['ADMIN', 'MANAJER'].includes(user.role)
+  const canViewDashboard = canViewDashboardRole(user.role)
 
   const request = useCallback(
     async (path: string, init?: RequestInit) => {
@@ -150,15 +146,8 @@ export default function App() {
     }
   }
 
-  const total = Number(dashboard?.totals?.total ?? 0)
-  const closed = Number(dashboard?.totals?.closed ?? 0)
-  const dashboardMetrics = [
-    { label: 'Total laporan', value: total },
-    { label: 'Laporan aktif', value: Math.max(total - closed, 0) },
-    { label: 'Sedang dikerjakan', value: Number(dashboard?.totals?.in_progress ?? 0) },
-    { label: 'Selesai ditutup', value: closed },
-    { label: 'Melewati target', value: Number(dashboard?.totals?.overdue ?? 0) },
-  ]
+  const dashboardMetrics = buildDashboardMetrics(dashboard)
+  const statusDistribution = normalizeStatusDistribution(dashboard)
 
   return (
     <div className="app-shell">
@@ -230,12 +219,12 @@ export default function App() {
                 </div>
                 <div className="status-summary">
                   <h3>Distribusi status</h3>
-                  {dashboard?.byStatus?.length ? (
+                  {statusDistribution.length ? (
                     <ul>
-                      {dashboard.byStatus.map((item) => (
+                      {statusDistribution.map((item) => (
                         <li key={item.status}>
-                          <span>{item.status.replaceAll('_', ' ')}</span>
-                          <strong>{Number(item.count)}</strong>
+                          <span>{item.label}</span>
+                          <strong>{item.count}</strong>
                         </li>
                       ))}
                     </ul>

@@ -39,3 +39,14 @@ CR-006 automated regression passes. The previous review gap for dashboard role v
 
 - Automated tests cover deterministic dashboard logic, permission guard, zero-state metric handling, and status distribution normalization.
 - Browser visual UAT remains a Step 14 concern; no new dependency such as jsdom or Playwright was introduced.
+# CR-008 Test Run Addendum
+
+| Command | Result |
+|---|---|
+| `npm.cmd ci` | Pass; 212 packages installed, 0 vulnerabilities |
+| `npm.cmd test` | Pass; 2 files, 26/26 tests |
+| `npm.cmd run lint` | Pass; 0 errors, 2 generated Cloudflare warnings |
+| `npm.cmd run build` | Pass; Worker and client bundles generated |
+| `git diff --check` | Pass; line-ending warning only |
+
+Wrangler could not write its optional debug log outside the workspace sandbox, but the production build completed with exit code 0.

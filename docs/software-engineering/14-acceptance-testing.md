@@ -49,3 +49,12 @@ Accepted. CR-006 passed TEST-021–026, UAT-007–012, deployment, and productio
 ## Follow-up
 
 REL-002 is promoted as the active deployed baseline. Future production feedback routes through Step 16.
+# CR-008 Acceptance Addendum
+
+- [x] Public Cloudflare page loads the Campus Care frontend.
+- [x] D1-backed users, locations, and categories load in the reporter form.
+- [x] ADMIN role displays the operational dashboard.
+- [x] Dashboard values are returned and rendered without an error state.
+- [x] No personal data was submitted during read-only smoke verification.
+
+Decision: **accepted**. REL-002 behavior remains unchanged.

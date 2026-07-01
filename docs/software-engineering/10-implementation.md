@@ -81,3 +81,6 @@ Manual browser UAT remains a Step 14 gate before any release or deployment. A cl
 Step 13 extracted dashboard role and metric derivation into `src/dashboard.ts` and added `tests/dashboard.test.ts` so ISSUE-011 has deterministic automated coverage without adding browser/test dependencies. `src/App.tsx` now consumes the helper while preserving the same rendered dashboard behavior.
 
 Latest automated result: `npm.cmd test` passes 2 files, 26/26 tests.
+# CR-008 Repository Maintenance Addendum
+
+CR-008 made no runtime implementation change. Obsolete `.gitkeep` placeholders were removed after verifying each directory had a real artifact, and reviewer guidance was added under `tests/unit`, `tests/integration`, and `tests/acceptance`. Frontend, Worker API, D1 schema, dependencies, and Cloudflare configuration remain unchanged.

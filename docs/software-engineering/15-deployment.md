@@ -72,3 +72,6 @@ REL-002 deployed successfully on 2 July 2026.
 ## New Baseline
 
 REL-002 is the active deployed baseline for CR-006 / ISSUE-011. REL-001 remains the rollback baseline. Production feedback or defects route through Step 16 change control.
+# CR-008 Deployment Audit Addendum
+
+On 2 July 2026, the existing REL-002 URL was reverified through a read-only browser smoke test. The public React frontend loaded, D1-backed reference data loaded, and the ADMIN dashboard rendered successfully. CR-008 does not require or claim a new deployment because it changes repository documentation only; REL-002 remains the active runtime baseline and REL-001 remains its rollback version.

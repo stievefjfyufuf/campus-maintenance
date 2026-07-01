@@ -56,3 +56,6 @@ Browser-level visual checks remain useful for exact responsive layout and click-
 - Current dashboard API still exposes only the REL-001 subset of the richer REQ-020/021 metrics. CR-006 must not invent missing metrics.
 - `npm ci` has a pre-existing lockfile optional peer mismatch; it is not introduced by CR-006 and should be tracked separately.
 - Wrangler may fail to write optional logs in the sandbox while still returning successful build output.
+# CR-008 Verification Addendum
+
+CR-008 reuses TEST-001–026 as the runtime regression suite and adds release checks for placeholder removal, `git diff --check`, production page loading, D1-backed reference-data loading, and authorized dashboard visibility. No new behavior requires a new automated test ID.

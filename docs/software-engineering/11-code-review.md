@@ -71,3 +71,6 @@ After Step 12 identified the missing automated dashboard coverage, Step 13 extra
 | Regression | `npm.cmd test` passes 26/26; lint/build pass with the same generated Wrangler log warning |
 
 Decision remains **approved with notes** for CR-006, now with automated coverage for the previously noted dashboard visibility/metric gap.
+# CR-008 Review Addendum
+
+No runtime, API, migration, dependency, or secret change was introduced. The repository-hygiene diff is within CR-008 scope, every removed `.gitkeep` was obsolete, and the new test-layer README files point to existing traceable evidence. Decision: **approved** for documentation/repository maintenance.

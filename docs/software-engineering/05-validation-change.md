@@ -6,11 +6,11 @@
 |---|---|
 | Proyek | Campus Service Request and Maintenance System |
 | Tahap | 05 - Validation and Change |
-| Status | Validated - Ready for Step 6 Architecture Design |
+| Status | Validated - Lifecycle paused after Step 5 |
 | Tanggal | 1 Juli 2026 |
 | Human reviewer | Stieve - Project owner/stakeholder proxy |
 | Upstream | `02-elicitation.md`, `03-specification.md`, `04-prioritization.md` |
-| Tahap berikutnya | 06 - Architecture Design jika readiness disetujui |
+| Tahap berikutnya | 06 - Architecture Design jika proyek dilanjutkan |
 
 Dokumen ini memvalidasi requirement dan mencatat penyelesaian temuan melalui `CR-001`. `Y` berarti kriteria terpenuhi. Riwayat `VAL-001` sampai `VAL-010` dipertahankan agar alasan perubahan tetap dapat ditelusuri.
 
@@ -178,6 +178,8 @@ CR-002 menutup VAL-009/010 serta menyinkronkan evidence dan requirements index y
 # Readiness Decision
 
 **Ready for design: Yes.**
+
+Keputusan readiness tetap valid, tetapi pada 1 Juli 2026 project owner meminta lifecycle dihentikan sementara setelah Step 5. Draft Step 6 dihapus melalui `CR-003`; pekerjaan desain baru dimulai kembali setelah instruksi lanjutan.
 
 Alasan:
 

@@ -4,7 +4,7 @@ Repository proyek **Campus Service Request and Maintenance System** untuk mata k
 
 ## Status
 
-Fondasi repository menggunakan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. Requirement Step 1–5 telah divalidasi dan dinyatakan siap untuk architecture design. Draft Step 6 tersedia untuk human review; implementasi fitur belum dimulai.
+Fondasi repository menggunakan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. Requirement Step 1–5 telah divalidasi. Proyek dihentikan sementara setelah Step 5 sesuai keputusan project owner; Step 6 dan implementasi fitur belum dimulai.
 
 ## Menjalankan Proyek
 

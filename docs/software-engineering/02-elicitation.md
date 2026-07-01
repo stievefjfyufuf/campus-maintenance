@@ -8,12 +8,17 @@
 | Tahap | 02 - Elicitation |
 | Status | Selesai dengan tindak lanjut terbuka |
 | Tanggal | 30 Juni 2026 |
+| Tanggal disetujui | 1 Juli 2026 |
 | Upstream | `docs/software-engineering/01-inception.md` |
 | Responden | Stieve — Project owner/stakeholder proxy |
 | Teknik | Document analysis dan kuesioner terstruktur |
 | Tahap berikutnya | 03 - Specification |
 
 Dokumen ini menangkap kebutuhan mentah dan keputusan stakeholder. Isinya belum merupakan functional requirement atau desain teknis. Jawaban asli Q-001 sampai Q-027 digunakan sebagai evidence elicitation dan diringkas tanpa mengubah maksud responden.
+
+## Human Review Record
+
+Stieve bertindak sebagai project owner/stakeholder proxy. Keputusan elicitation digunakan dan disetujui pada Step 3–5; pada 1 Juli 2026 Stieve mengizinkan sinkronisasi seluruh evidence Step 1–5 melalui `CR-002`. Q-027 tetap open sebagai metadata delivery non-blocking.
 
 ## Elicitation Objectives
 
@@ -31,7 +36,7 @@ Dokumen ini menangkap kebutuhan mentah dan keputusan stakeholder. Isinya belum m
 | SRC-002 | `CASE.md` | Ringkasan studi kasus | Tinggi | Diturunkan dari brief tugas |
 | SRC-003 | `docs/software-engineering/01-inception.md` | Artefak upstream | Sedang-Tinggi | Menjadi sumber ID goal, stakeholder, scope, asumsi, dan constraint |
 | SRC-004 | Percakapan pengguna 30 Juni 2026 | Keputusan project owner | Tinggi | Repository dan dokumen proyek boleh public dengan pembatasan data |
-| SRC-005 | `kuesioner-elicitation-step-2-terjawab.md` | Kuesioner stakeholder proxy | Tinggi | Q-001–Q-027 diisi dan disahkan Stieve pada 30 Juni 2026 |
+| SRC-005 | `evidence/02-elicitation/03-stakeholder-responses.md` | Ledger jawaban stakeholder proxy | Tinggi | Q-001–Q-027 dan DEC-001–DEC-010 disinkronkan melalui CR-002 |
 
 ## Stakeholders and Techniques
 

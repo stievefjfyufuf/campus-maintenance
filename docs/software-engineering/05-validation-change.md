@@ -124,8 +124,8 @@ Tidak ditemukan duplicate requirement atau requirement tanpa sumber. Seluruh `RE
 | CHG-CAND-001 | VAL-001 | Ganti rentang exit criteria MVP dengan daftar AC Must eksplisit | Step 4 only; AC IDs tetap | Documentation correction; tidak mengubah requirement | Applied via CR-001 |
 | CHG-CAND-002 | VAL-002 | Pertahankan seluruh REQ-020 sebagai Must | REQ-020, AC-039/040, Step 4 | Effort MVP bertambah; requirement tidak dipecah | Applied via DEC-022/CR-001 |
 | CHG-CAND-003 | VAL-003–007 | Sahkan DEC-017–DEC-021 | REQ-003/014/015/017/023, NFR-001/002 | Menghilangkan provisional status | Applied via CR-001 |
-| CHG-CAND-004 | VAL-009 | Sinkronkan status Step 1 melalui change record terpisah | Step 1 metadata | Documentation governance | Deferred |
-| CHG-CAND-005 | VAL-010 | Tambahkan reusable `skills/03-specification/SKILL.md` pada cleanup terpisah | CONSTRAINT-005 | Evidence/delivery completeness | Deferred |
+| CHG-CAND-004 | VAL-009 | Sinkronkan status Step 1 melalui change record terpisah | Step 1 metadata | Documentation governance | Applied via CR-002 |
+| CHG-CAND-005 | VAL-010 | Tambahkan reusable `skills/03-specification/SKILL.md` pada cleanup terpisah | CONSTRAINT-005 | Evidence/delivery completeness | Applied via CR-002 |
 
 Perubahan approved pada Step 3–4 dicatat melalui `CR-001`. CHG-CAND-004/005 tidak termasuk scope CR-001 dan tetap deferred.
 
@@ -168,8 +168,12 @@ AC-007/008, AC-013/014, dan AC-017/018 tetap valid untuk Baseline+ dan tidak dih
 | VAL-006 | Dataset performa disahkan DEC-020. | Resolved |
 | VAL-007 | Assigned-only visibility disahkan DEC-021. | Resolved |
 | VAL-008 | Q-033 tetap open sebagai metadata delivery dan non-blocking. | Accepted open |
-| VAL-009 | Cleanup status Step 1 ditunda; tidak memengaruhi requirement/design. | Deferred |
-| VAL-010 | Project-local Step 3 skill ditunda sebagai evidence completeness item. | Deferred |
+| VAL-009 | Status dan human-review evidence Step 1 disinkronkan melalui CR-002. | Resolved |
+| VAL-010 | Project-local Step 3 skill ditambahkan dan divalidasi melalui CR-002. | Resolved |
+
+## Post-Validation Governance Cleanup
+
+CR-002 menutup VAL-009/010 serta menyinkronkan evidence dan requirements index yang stale. Cleanup tidak mengubah arti, prioritas, atau acceptance criteria requirement; seluruh ID tetap dipertahankan.
 
 # Readiness Decision
 
@@ -189,7 +193,7 @@ Alasan:
 | Seluruh REQ/NFR/BR/AC | Kirim ke 06-se-architecture-design |
 | DEC-017–DEC-022 | Gunakan sebagai constraint desain |
 | Q-033 | Pantau sebagai delivery metadata; tidak menghambat desain |
-| VAL-009/010 | Deferred documentation/evidence cleanup; tidak mengubah arsitektur |
+| VAL-009/010 | Resolved via CR-002; tidak mengubah arsitektur |
 
 ## Quality Checklist
 

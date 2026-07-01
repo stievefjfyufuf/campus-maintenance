@@ -1,0 +1,4 @@
+interface:
+  display_name: "Campus Maintenance Specification"
+  short_description: "Create traceable maintenance requirements"
+  default_prompt: "Use $03-specification to convert approved elicitation needs into testable Campus Maintenance requirements."

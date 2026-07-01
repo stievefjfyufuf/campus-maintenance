@@ -6,12 +6,18 @@
 |---|---|
 | Proyek | Campus Service Request and Maintenance System |
 | Tahap | 01 - Inception dan Stakeholder |
-| Status | Draft untuk human review |
+| Status | Disetujui sebagai input Step 2 |
 | Tanggal | 30 Juni 2026 |
+| Tanggal disetujui | 1 Juli 2026 |
+| Human reviewer | Stieve - Project owner/stakeholder proxy |
 | Sumber utama | `CASE.md`, `README.md`, dan brief tugas Software Engineering |
 | Tahap berikutnya | 02 - Elicitation |
 
 Dokumen ini merupakan scope awal, bukan requirement baseline. Informasi yang belum dikonfirmasi dicatat sebagai asumsi atau pertanyaan terbuka.
+
+## Human Review Record
+
+Pada 1 Juli 2026, setelah audit Step 1–5, Stieve mengizinkan seluruh koreksi yang diperlukan melalui pernyataan **“ok tolong anda kerjaakn semua nya itu dan kalau sudah kasih tau saya”**. Persetujuan mencakup Step 1 sebagai input elicitation dan sinkronisasi evidence melalui `CR-002`; asumsi yang telah diputuskan pada Step 2–5 tetap ditelusuri melalui DEC terkait.
 
 # Problem Statement
 
@@ -125,7 +131,7 @@ Fitur out-of-scope hanya dapat dipertimbangkan setelah seluruh baseline wajib se
 
 - **ASSUMP-001**: Terdapat unit atau fungsi fasilitas kampus yang menjadi pemilik operasional proses; nama dan struktur resminya perlu divalidasi.
 - **ASSUMP-002**: Satu orang dapat direpresentasikan oleh satu identitas pengguna, tetapi model autentikasi belum diputuskan.
-- **ASSUMP-003**: Karena login Google tidak wajib, demonstrasi peran mungkin menggunakan data pengguna sederhana atau role selector; keputusan ini belum disetujui.
+- **ASSUMP-003**: Karena login Google tidak wajib, demonstrasi peran dapat menggunakan data pengguna sederhana atau role selector; keputusan ini kemudian disetujui melalui `DEC-002`.
 - **ASSUMP-004**: Laporan hanya berkaitan dengan fasilitas kampus, bukan pengaduan akademik, keuangan, atau disiplin.
 - **ASSUMP-005**: Setiap laporan memiliki tepat satu status aktif pada satu waktu.
 - **ASSUMP-006**: Setiap perubahan status harus memiliki waktu perubahan dan pihak yang melakukan perubahan.

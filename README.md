@@ -36,7 +36,7 @@ npm test
 
 ## Deployment
 
-Belum dilakukan. URL Cloudflare akan dicantumkan setelah tahap deployment selesai.
+[Aplikasi publik](https://campus-maintenance.stievefjfyufuf.workers.dev) berjalan di Cloudflare Workers dengan database D1 region APAC.
 
 ## Known Limitations
 

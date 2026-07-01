@@ -14,7 +14,7 @@ REL-001 includes CR-005, ISSUE-001–010, REQ-001–024, TEST-001–020, and UAT
 - [x] Local browser UAT passes.
 - [x] Remote D1 created in APAC and production binding configured.
 - [x] Remote migration and seed completed (9 tables, 42 rows written).
-- [ ] Public URL and smoke test completed after `workers.dev` onboarding.
+- [x] Public URL and production smoke test completed.
 
 ## Deployment Steps
 
@@ -24,6 +24,24 @@ Create the remote D1 database, replace the placeholder ID in `wrangler.jsonc`, a
 
 If a smoke test fails, roll back the Worker to the previous deployment. For this first additive migration, retain D1 data and deploy the corrected Worker; restore from D1 backup/export only if data integrity is affected.
 
+## Smoke Tests
+
+| Check | Result |
+|---|---|
+| Public page | HTTP 200, HTML served |
+| `GET /api/health` | HTTP 200, `{ "ok": true }` |
+| `GET /api/users` | HTTP 200, four seeded roles returned from production D1 |
+| D1 binding | Active: `campus-maintenance`, APAC |
+
 ## Current Result
 
-The Worker and five static assets uploaded successfully and the production D1 binding is active. Publishing is blocked only because this Cloudflare account has not registered a `workers.dev` subdomain. Complete the one-time onboarding at `https://dash.cloudflare.com/a914bb189a597cbfa263e2812c2a8b27/workers/onboarding`, rerun `npm run deploy`, then record the URL and smoke result. REL-001 is not marked fully deployed until that public check passes.
+REL-001 deployed successfully on 1 July 2026.
+
+- URL: `https://campus-maintenance.stievefjfyufuf.workers.dev`
+- Cloudflare Worker version: `edd9317a-8018-4b2c-abf7-e81711455df6`
+- Assets: five static assets published.
+- Database: remote migration and seed completed; production API reads D1 successfully.
+
+## New Baseline
+
+REL-001 is the first deployed baseline for CR-005, ISSUE-001–010, REQ-001–024, TEST-001–020, and UAT-001–006. Production feedback or defects route through Step 16 change control.

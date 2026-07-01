@@ -55,23 +55,23 @@ Aturan klasifikasi:
 | REQ-012 | 5 | 5 | 5 | 5 | 2 | 18 | REQ-010/011 | Must | MVP | Menyelesaikan tahap teknisi |
 | REQ-013 | 5 | 5 | 5 | 5 | 2 | 18 | REQ-012 | Must | MVP | Menutup alur end-to-end normal |
 | REQ-014 | 3 | 3 | 2 | 2 | 3 | 7 | REQ-012, kalkulasi hari kerja | Should | Baseline+ | Mengurangi laporan menggantung; bukan blocker happy path |
-| REQ-015 | 3 | 4 | 2 | 3 | 3 | 9 | REQ-014, Q-028/Q-030 | Should | Baseline+ | Exception timeout, masih provisional |
+| REQ-015 | 3 | 4 | 2 | 3 | 3 | 9 | REQ-014, DEC-017/019 | Should | Baseline+ | Manual timeout close tervalidasi |
 | REQ-016 | 4 | 4 | 3 | 4 | 4 | 11 | REQ-013/019 | Should | Baseline+ | Menangani hasil tidak memuaskan |
-| REQ-017 | 4 | 4 | 2 | 3 | 3 | 10 | REQ-016, Q-029 | Should | Baseline+ | State target masih provisional |
+| REQ-017 | 4 | 4 | 2 | 3 | 3 | 10 | REQ-016, DEC-018 | Should | Baseline+ | Reopen ke `UNDER_REVIEW` tervalidasi |
 | REQ-018 | 4 | 5 | 4 | 4 | 4 | 13 | REQ-003/022 | Must | MVP | Komunikasi wajib dan pemisahan catatan internal |
 | REQ-019 | 5 | 5 | 5 | 5 | 4 | 16 | Seluruh perubahan state | Must | MVP | Auditability dan konsistensi workflow |
 | REQ-020 | 5 | 2 | 3 | 5 | 5 | 10 | REQ-002/019/024 | Must | MVP | Dashboard data nyata diwajibkan brief/SUCCESS-004; MVP memakai metrik inti |
 | REQ-021 | 3 | 1 | 1 | 2 | 4 | 3 | REQ-020/004 | Should | Baseline+ | Filter lengkap dapat ditambahkan setelah kartu inti |
 | REQ-022 | 5 | 5 | 5 | 5 | 2 | 18 | Seed users | Must | MVP | Mekanisme akses demonstrasi untuk semua aktor |
-| REQ-023 | 4 | 3 | 2 | 3 | 4 | 8 | REQ-019/020, Q-030 | Should | Baseline+ | SLA bernilai tetapi aturan hari kerja provisional |
+| REQ-023 | 4 | 3 | 2 | 3 | 4 | 8 | REQ-019/020, DEC-019 | Should | Baseline+ | SLA memakai kalender baseline tervalidasi |
 | REQ-024 | 5 | 5 | 5 | 5 | 4 | 16 | D1 schema/API | Must | MVP | Sumber data persisten bagi seluruh fungsi |
 
 # Non-Functional Requirement Priorities
 
 | Requirement | V | R | U | C | E | Score | Dependency | MoSCoW | Release | Rationale |
 |---|---:|---:|---:|---:|---:|---:|---|---|---|---|
-| NFR-001 | 3 | 2 | 1 | 3 | 4 | 5 | REQ-003/004, Q-031 | Should | Baseline+ | Target daftar/pencarian perlu dataset terukur |
-| NFR-002 | 4 | 2 | 2 | 3 | 4 | 7 | REQ-003/020, Q-031 | Should | Baseline+ | Target detail/dashboard diverifikasi setelah fungsi stabil |
+| NFR-001 | 3 | 2 | 1 | 3 | 4 | 5 | REQ-003/004, DEC-020 | Should | Baseline+ | Target diuji pada dataset tervalidasi |
+| NFR-002 | 4 | 2 | 2 | 3 | 4 | 7 | REQ-003/020, DEC-020 | Should | Baseline+ | Target detail/dashboard diuji pada dataset tervalidasi |
 | NFR-003 | 5 | 5 | 5 | 5 | 4 | 16 | REQ-003/018/022 | Must | MVP | Privacy dan authorization tidak boleh ditunda |
 | NFR-004 | 5 | 5 | 5 | 5 | 2 | 18 | Data demo/repository | Must | MVP | Constraint publik dan pencegahan kebocoran secret |
 | NFR-005 | 5 | 5 | 5 | 5 | 5 | 15 | REQ-008–019 | Must | MVP | Mencegah status/history/assignment inkonsisten |
@@ -101,7 +101,7 @@ Alur tersebut harus memakai role selector, membatasi akses, mencatat komentar da
 - **Technician execution:** REQ-010, REQ-011, REQ-012.
 - **Confirmation and closure:** REQ-013.
 - **Communication and audit:** REQ-018, REQ-019.
-- **Management visibility:** REQ-020 dengan kartu inti: total, per status, per priority, dan recent activity. Metrik/filter lanjutan tetap pada Baseline+.
+- **Management visibility:** seluruh metrik REQ-020: jumlah masuk, distribusi status/kategori/prioritas, rata-rata waktu penyelesaian, laporan terlambat, beban teknisi, reopen, dan tren. Filter lengkap REQ-021 tetap pada Baseline+.
 
 ## MVP Quality Scope (Must)
 
@@ -111,7 +111,7 @@ NFR-003 sampai NFR-007, NFR-009, NFR-010, dan NFR-012.
 
 MVP dianggap selesai hanya jika:
 
-1. AC-001 sampai AC-026, AC-035 sampai AC-040, serta AC-043, AC-044, AC-047, dan AC-048 yang terkait scope Must lulus.
+1. AC Must berikut lulus: AC-001–006, AC-009–012, AC-015–016, AC-019–026, AC-035–040, AC-043–044, dan AC-047–048.
 2. Negative authorization tests membuktikan pelapor tidak dapat melihat laporan pengguna lain dan catatan internal.
 3. Setiap transisi workflow menghasilkan audit event dan tidak membuat lebih dari satu teknisi aktif.
 4. Data tetap tersedia setelah reload dan deployment menggunakan D1.
@@ -123,10 +123,10 @@ MVP dianggap selesai hanya jika:
 | Sequence | Items | Outcome | Entry Dependency |
 |---:|---|---|---|
 | 1 | REQ-004, REQ-007, REQ-009 | Operasi daftar, kategori, dan reassignment lebih lengkap | MVP access, list, assignment, audit stabil |
-| 2 | REQ-016, REQ-017 | Reopen end-to-end | Q-029 diputuskan; workflow dan audit stabil |
-| 3 | REQ-014, REQ-015 | Reminder in-app dan manual timeout close | Q-028/Q-030 divalidasi |
-| 4 | REQ-021, REQ-023 | Dashboard filter lengkap dan SLA/overdue | Dashboard inti; Q-030 divalidasi |
-| 5 | NFR-001, NFR-002, NFR-008, NFR-011 | Performance, accessibility, dan retention validation lengkap | Q-031 dan dataset uji disetujui |
+| 2 | REQ-016, REQ-017 | Reopen end-to-end | DEC-018; workflow dan audit stabil |
+| 3 | REQ-014, REQ-015 | Reminder in-app dan manual timeout close | DEC-017/019 |
+| 4 | REQ-021, REQ-023 | Dashboard filter lengkap dan SLA/overdue | Dashboard penuh; DEC-019 |
+| 5 | NFR-001, NFR-002, NFR-008, NFR-011 | Performance, accessibility, dan retention validation lengkap | Dataset DEC-020 tersedia |
 
 # Could and Won't
 
@@ -160,7 +160,7 @@ Tidak ada `REQ-###` approved yang diklasifikasikan Could karena semua requiremen
 | 6 | Review, priority, assignment | REQ-005/006/008 | Orders 3–5 | RISK-003 |
 | 7 | Acceptance, progress, resolve | REQ-010/011/012 | Order 6 | RISK-003 |
 | 8 | Comments and confirmation/close | REQ-018/013 | Orders 3–7 | RISK-001/004 |
-| 9 | Dashboard inti | REQ-020 | Orders 2, 4–8 | RISK-004 |
+| 9 | Dashboard lengkap | REQ-020 | Orders 2, 4–8 | RISK-004 |
 | 10 | Public deployment and MVP verification | NFR-007/012 | Seluruh Must | RISK-008/009 |
 | 11 | Baseline+ exception flows | Should requirements | MVP accepted; open questions resolved | RISK-002/003 |
 
@@ -170,9 +170,9 @@ Tidak ada `REQ-###` approved yang diklasifikasikan Could karena semua requiremen
 |---|---|---|---|---|
 | DEC-011 | MVP memprioritaskan happy path `SUBMITTED` sampai `CLOSED`. | Memberikan demonstrasi end-to-end dan memenuhi SUCCESS-002 sebelum exception flow. | Project owner | Reopen/reminder/reassignment masuk Baseline+ |
 | DEC-012 | Security, privacy, integrity, audit, persistence, dan public deployment adalah Must walau tidak selalu terlihat sebagai fitur UI. | Risiko dan constraint tugas tidak dapat dipulihkan dengan aman jika ditunda. | Project owner/developer | NFR-003–006/009/010/012 masuk MVP |
-| DEC-013 | Dashboard inti adalah Must; filter dan metrik lanjutan diselesaikan pada Baseline+. | Brief memerlukan dashboard nyata, tetapi seluruh variasi filter tidak diperlukan untuk membuktikan value awal. | Project owner | REQ-020 Must; REQ-021 Should |
+| DEC-013 | Seluruh metrik REQ-020 adalah Must; filter REQ-021 diselesaikan pada Baseline+. | DEC-022 mempertahankan arti requirement approved dan menyelesaikan VAL-002. | Project owner | REQ-020 penuh Must; REQ-021 Should |
 | DEC-014 | Upload, email, dan autentikasi penuh tidak dimasukkan meskipun bernilai bagi stakeholder. | Sudah dikeluarkan dari baseline dan menambah dependency/cost/risk. | Project owner | Scope creep dicegah |
-| DEC-015 | Requirement provisional tidak menjadi Must sebelum pertanyaan terkait divalidasi. | Menghindari implementasi state/SLA/automation yang belum disetujui. | Project owner + stakeholder terkait | REQ-015/017/023 Should |
+| DEC-015 | REQ-015/017/023 tetap Should setelah keputusan perilakunya divalidasi. | Item merupakan exception/Baseline+ walau tidak lagi provisional. | Project owner + stakeholder terkait | DEC-017–019 mengunci perilaku |
 | DEC-016 | Project-local reusable skill disimpan terpisah dari artefak hasil. | Memenuhi CONSTRAINT-005 dan menjaga workflow dapat digunakan ulang. | Project team | `skills/04-prioritization/SKILL.md` dibuat |
 
 # Conflict Log
@@ -181,9 +181,9 @@ Tidak ada `REQ-###` approved yang diklasifikasikan Could karena semua requiremen
 |---|---|---|---|---|
 | Keinginan upload bukti vs scope/cost | STK-001/003; SCOPE-OUT-001 | Won't baseline | Object storage menambah desain, security, dan deployment risk | Change request setelah baseline |
 | Keinginan notifikasi vs email out of scope | STK-001; REQ-014; SCOPE-OUT-002 | In-app indicator Should; email Won't | Menjaga value reminder tanpa dependency email | Validasi REQ-014 di Step 5 |
-| Dashboard lengkap vs waktu delivery | STK-004; REQ-020/021 | Kartu inti Must, filter lengkap Should | Dashboard nyata tetap tersedia pada MVP | Definisikan subset kartu dalam design |
-| Exception flow vs kepastian state | STK-001/002/004; REQ-015/017/023 | Should/provisional | Q-028–Q-030 belum final | Putuskan pada Step 5 |
-| Visibility teknisi berdasarkan keahlian vs privacy | STK-002/003/006; REQ-003; Q-032 | MVP hanya laporan assigned | Least privilege mengurangi risiko kebocoran | Validasi access matrix Step 5 |
+| Dashboard lengkap vs waktu delivery | STK-004; REQ-020/021 | Seluruh REQ-020 Must; filter REQ-021 Should | Menjaga requirement approved sesuai DEC-022 | Monitor effort pada issue planning |
+| Exception flow vs kepastian state | STK-001/002/004; REQ-015/017/023 | Should dengan perilaku tervalidasi | DEC-017–019 menyelesaikan state, close, dan kalender | Tidak ada konflik terbuka |
+| Visibility teknisi berdasarkan keahlian vs privacy | STK-002/003/006; REQ-003 | Hanya laporan assigned | DEC-021 menerapkan least privilege | Tidak ada perluasan pra-assignment |
 | Retensi 3 tahun vs kebutuhan demo | STK-005/006; NFR-011 | Policy/schema Should; tidak membangun proses arsip MVP | Tidak ada data berumur 3 tahun pada demo | Review schema dan dokumentasi |
 
 # Risk and Constraint Coverage
@@ -207,7 +207,7 @@ Step 5 harus:
 
 1. Memvalidasi bahwa Must benar-benar cukup untuk alur end-to-end dan tidak ada dependency tersembunyi.
 2. Memeriksa konsistensi prioritas terhadap 24 REQ, 12 NFR, 14 BR, dan 48 AC.
-3. Memutuskan atau mempertahankan secara eksplisit Q-028 sampai Q-033.
+3. Memvalidasi Q-028 sampai Q-032; Q-033 boleh tetap sebagai delivery metadata non-blocking.
 4. Memvalidasi subset dashboard inti dan access matrix teknisi.
 5. Memastikan `Should` tetap masuk required baseline plan dan tidak diam-diam dianggap dibatalkan.
 6. Mencatat perubahan terhadap specification sebagai change request, bukan mengedit baseline tanpa jejak.
@@ -220,5 +220,5 @@ Step 5 harus:
 - [x] Baseline+, Could, dan Won't dipisahkan.
 - [x] Dependency order mendahulukan security, data, audit, dan workflow foundations.
 - [x] Konflik stakeholder/requirement memiliki keputusan, alasan, dan follow-up.
-- [x] Requirement provisional dan pertanyaan terbuka tidak disembunyikan.
+- [x] Requirement yang semula provisional dan pertanyaan terbuka ditelusuri hingga keputusan Step 5.
 - [x] Handoff ke Step 5 tersedia.

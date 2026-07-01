@@ -1,40 +1,27 @@
 # Implementation Notes
 
-## Issue
+## Issues
 
-`SETUP-001` - Membuat fondasi repository sebelum requirements engineering dimulai.
-
-Belum terhubung ke `REQ` atau `AC` karena tahap Inception belum dilaksanakan. Scope pekerjaan hanya repository bootstrap; fitur aplikasi berada di luar scope.
+ISSUE-001 through ISSUE-010 under CR-005, linked to REQ-001–024, AC-001–048, DATA-001–008, API-001–022, and UI-001–005.
 
 ## Files Changed
 
-| File/Folder | Reason |
-|---|---|
-| `package.json` | Menyiapkan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. |
-| `wrangler.jsonc` | Menetapkan nama Worker `campus-maintenance`. |
-| `README.md` | Mencatat status dan struktur proyek. |
-| `CASE.md` | Menyimpan studi kasus sebagai input Inception. |
-| `skills/`, `docs/`, `database/`, `tests/`, `evidence/` | Menyiapkan struktur minimum tugas. |
-
-## Approach
-
-Menggunakan generator resmi Cloudflare dengan framework React, variant `react-ts`, platform Workers, dan tanpa deployment. Repository diberi nama `campus-maintenance` sesuai tutorial tugas.
+| Area | Files | Reason |
+|---|---|---|
+| Database | `database/migrations/0001_initial_schema.sql`, `database/seed.sql` | D1 schema, one-active-assignment constraint, master/demo data |
+| API | `worker/index.ts`, `worker/domain.ts` | Hono routes, role validation, workflow, audit, dashboard |
+| UI | `src/App.tsx`, `src/App.css` | Responsive role-based report workflow |
+| Config | `wrangler.jsonc`, `package.json` | D1 binding, Hono, Vitest, test command |
+| Tests | `tests/domain.test.ts` | 20 deterministic domain tests |
 
 ## Behavior Implemented
 
-Belum ada behavior bisnis yang diimplementasikan.
+Create/list/filter/detail reports, role-scoped visibility, review, triage, assignment, acceptance, resolution, closure, comments with internal filtering, history, dashboard metrics, D1 persistence, seed role switching, validation, audit events, and business-day due dates.
 
-## Migration/Config Changes
+## Migration and Compatibility
 
-Konfigurasi scaffold Cloudflare tersedia. Binding D1 belum dibuat karena desain database belum disetujui.
+The initial migration is additive and intended for a new D1 database. Production requires replacing the placeholder database ID after `wrangler d1 create`. Optional features and production authentication remain out of scope.
 
-## Manual Verification
+## Verification
 
-- `npm run lint`: lulus dengan 0 error dan 2 warning dari file type-definition Cloudflare yang digenerasi.
-- `npm run build`: lulus; bundle Worker dan React client berhasil dibuat.
-- `npm install`: selesai dengan 0 vulnerability.
-
-## Risks
-
-- Requirement, arsitektur, dan database belum menjadi baseline.
-- Jangan mengimplementasikan fitur bisnis sebelum Inception, Elicitation, Specification, dan Design selesai.
+Run `npm test`, `npm run lint`, `npm run build`, local D1 migrations/seed, then browser/API UAT. Deployment follows only after these gates pass.

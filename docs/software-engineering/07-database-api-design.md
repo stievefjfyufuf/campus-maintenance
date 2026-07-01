@@ -6,7 +6,7 @@
 |---|---|
 | Proyek | Campus Service Request and Maintenance System |
 | Tahap | 07 - Database & API Design |
-| Status | **Baseline / Approved** |
+| Status | **Approved after CR-005 corrections** |
 | Tanggal | 1 Juli 2026 |
 | Upstream | `docs/software-engineering/03-specification.md`, `docs/software-engineering/06-architecture-design.md` |
 | Downstream | `docs/software-engineering/08-ui-design.md`, `docs/software-engineering/09-issue-planning.md` |
@@ -248,12 +248,12 @@ Tabel pencatatan audit trail yang bersifat immutable (tidak ada mutasi update/de
 
 ## API Endpoints
 
-Seluruh API menggunakan format REST over HTTP dengan respon JSON. Otorisasi dilakukan via header `X-User-Id` dan `X-Role` yang mewakili Role Selector.
+Seluruh API menggunakan format REST over HTTP dengan respons JSON. Otorisasi dilakukan via header `X-User-Id` dan `X-Role` yang mewakili Role Selector. Kontrak API diberi ID `API-001` sampai `API-022` secara berurutan sesuai urutan tabel.
 
 | Method | Path | Purpose | Auth | Request | Response | Traceability |
 |---|---|---|---|---|---|---|
 | `GET` | `/api/users` | Mendapatkan semua daftar user dummy untuk role selector | Public | None | `200 OK`: Array of Users | REQ-022, AC-043 |
-| `POST` | `/api/reports` | Membuat laporan baru | PELAPOR | JSON: `title`, `description`, `location_id`, `location_detail`, `category_id`, `reporter_contact` | `210 Created`: Created Report | REQ-001, REQ-002, AC-001 |
+| `POST` | `/api/reports` | Membuat laporan baru | PELAPOR | JSON: `title`, `description`, `location_id`, `location_detail`, `category_id`, `reporter_contact` | `201 Created`: Created Report | REQ-001, REQ-002, AC-001 |
 | `GET` | `/api/reports` | Mengambil daftar laporan terfilter sesuai role | Any | Query: `status`, `category_id`, `priority`, `search` | `200 OK`: Array of Reports | REQ-003, REQ-004, BR-012 |
 | `GET` | `/api/reports/:id` | Mengambil detail spesifik satu laporan | Any | None | `200 OK`: Report Detail | REQ-003, BR-012, AC-006 |
 | `PATCH` | `/api/reports/:id/review` | Memulai proses review laporan (`SUBMITTED` -> `UNDER_REVIEW`) | ADMIN | None | `200 OK`: Updated Report | REQ-005, BR-002, AC-009 |
@@ -261,17 +261,17 @@ Seluruh API menggunakan format REST over HTTP dengan respon JSON. Otorisasi dila
 | `POST` | `/api/reports/:id/assign` | Menugaskan teknisi pertama kali | ADMIN, MANAJER | JSON: `technician_id`, `reason` (opsional) | `200 OK`: Created Assignment | REQ-008, BR-004, AC-015 |
 | `POST` | `/api/reports/:id/reassign` | Memindahkan tugas ke teknisi baru | ADMIN | JSON: `technician_id`, `reason` | `200 OK`: Created Assignment | REQ-009, BR-004, AC-017 |
 | `PATCH` | `/api/reports/:id/accept` | Menyetujui tugas yang diberikan | TEKNISI | None | `200 OK`: Updated Status | REQ-010, BR-005, AC-020 |
-| `POST` | `/api/reports/:id/progress` | Menambah update progres pengerjaan | TEKNISI | JSON: `notes`, `action_taken`, `obstacles`, `estimated_completion` | `210 Created`: Progress Record | REQ-011, AC-021 |
+| `POST` | `/api/reports/:id/progress` | Menambah update progres pengerjaan | TEKNISI | JSON: `notes`, `action_taken`, `obstacles`, `estimated_completion` | `201 Created`: Progress Record | REQ-011, AC-021 |
 | `PATCH` | `/api/reports/:id/resolve` | Menyelesaikan pengerjaan laporan | TEKNISI | JSON: `completion_summary` | `200 OK`: Updated Status | REQ-012, AC-023 |
 | `PATCH` | `/api/reports/:id/close` | Menutup laporan (pelapor normal / admin manual) | PELAPOR, ADMIN | JSON: `reason` (wajib jika admin manual close) | `200 OK`: Updated Status | REQ-013, REQ-015, BR-010 |
-| `POST` | `/api/reports/:id/reopen` | Mengajukan permohonan buka kembali laporan | PELAPOR | JSON: `reason` | `210 Created`: Reopen Request Event | REQ-016, BR-011, AC-031 |
+| `POST` | `/api/reports/:id/reopen` | Mengajukan permohonan buka kembali laporan | PELAPOR | JSON: `reason` | `201 Created`: Reopen Request Event | REQ-016, BR-011, AC-031 |
 | `PATCH` | `/api/reports/:id/reopen/decide` | Menolak/menerima permohonan reopen | ADMIN, MANAJER | JSON: `decision` ('APPROVE'/'REJECT'), `reason` (opsional) | `200 OK`: Updated Status | REQ-016, REQ-017, AC-033 |
 | `GET` | `/api/reports/:id/comments` | Mengambil komentar laporan (terfilter untuk Pelapor) | Any | None | `200 OK`: Array of Comments | REQ-018, BR-013, AC-035 |
-| `POST` | `/api/reports/:id/comments` | Menulis komentar baru atau catatan internal | Any | JSON: `content`, `type` ('PUBLIC'/'INTERNAL') | `210 Created`: Created Comment | REQ-018, BR-013, AC-036 |
+| `POST` | `/api/reports/:id/comments` | Menulis komentar baru atau catatan internal | Any | JSON: `content`, `type` ('PUBLIC'/'INTERNAL') | `201 Created`: Created Comment | REQ-018, BR-013, AC-036 |
 | `GET` | `/api/reports/:id/history` | Mengambil riwayat log audit laporan | ADMIN, MANAJER | None | `200 OK`: Array of Audit Events | REQ-019, AC-037 |
 | `GET` | `/api/dashboard` | Mengambil metrik data dashboard statistik | ADMIN, MANAJER | Query: `status`, `category_id`, `priority`, `period` | `200 OK`: Dashboard Metrics | REQ-020, REQ-021, AC-039 |
 | `GET` | `/api/categories` | Mengambil daftar seluruh kategori | Any | Query: `include_inactive` (default: false) | `200 OK`: Array of Categories | REQ-003, REQ-007 |
-| `POST` | `/api/categories` | Menambah kategori baru | ADMIN | JSON: `name`, `description` | `210 Created`: Created Category | REQ-007, AC-013 |
+| `POST` | `/api/categories` | Menambah kategori baru | ADMIN | JSON: `name`, `description` | `201 Created`: Created Category | REQ-007, AC-013 |
 | `PATCH` | `/api/categories/:id` | Mengubah data atau menonaktifkan kategori | ADMIN | JSON: `name` (opsional), `description` (opsional), `is_active` (opsional) | `200 OK`: Updated Category | REQ-007, AC-014 |
 | `GET` | `/api/locations` | Mengambil daftar seluruh lokasi utama | Any | None | `200 OK`: Array of Locations | REQ-001 |
 
@@ -396,6 +396,9 @@ CREATE TABLE IF NOT EXISTS assignments (
     accepted_at TEXT,
     ended_at TEXT
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS one_active_assignment_per_report
+ON assignments(report_id) WHERE status IN ('PENDING', 'ACCEPTED');
 
 -- 6. Create progress_updates table
 CREATE TABLE IF NOT EXISTS progress_updates (

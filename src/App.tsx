@@ -1,148 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import cloudflareLogo from './assets/cloudflare.svg'
-import heroImg from './assets/hero.png'
+import { useCallback, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [name, setName] = useState('unknown')
+type User = { id: string; name: string; role: string }
+type Option = { id: string; name: string }
+type Report = { id: string; title: string; description: string; status: string; current_priority: string; category_name: string; location_name: string; created_at: string }
+const fallbackUsers: User[] = [{id:'usr-reporter',name:'Rina Pelapor',role:'PELAPOR'},{id:'usr-admin',name:'Adi Administrator',role:'ADMIN'},{id:'usr-tech',name:'Tono Teknisi',role:'TEKNISI'},{id:'usr-manager',name:'Maya Manajer',role:'MANAJER'}]
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started with Cloudflare</h1>
-          <p>
-            Edit <code>src/App.tsx</code> or <code>worker/index.ts</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none', padding: 0 }}>
-          <li>
-            <button
-              className="counter"
-              onClick={() => setCount((count) => count + 1)}
-            >
-              Count is {count}
-            </button>
-          </li>
-          <li>
-          <button
-            className="counter"
-            onClick={() => {
-              fetch('/api/')
-                .then((res) => res.json())
-                .then((data) => setName(data.name))
-            }}
-            aria-label='get name'
-          >
-            Name from API is: {name}
-          </button>
-          </li>
-        </ul>
-
-
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-            <li>
-              <a href="https://workers.cloudflare.com/" target="_blank">
-                <img className="button-icon" src={cloudflareLogo} alt="" />
-                Workers Docs
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+export default function App() {
+  const [users,setUsers]=useState<User[]>(fallbackUsers); const [user,setUser]=useState<User>(fallbackUsers[0])
+  const [reports,setReports]=useState<Report[]>([]); const [categories,setCategories]=useState<Option[]>([]); const [locations,setLocations]=useState<Option[]>([])
+  const [search,setSearch]=useState(''); const [status,setStatus]=useState(''); const [message,setMessage]=useState(''); const [loading,setLoading]=useState(true)
+  const request=useCallback(async(path:string,init?:RequestInit)=>{const res=await fetch(path,{...init,headers:{'Content-Type':'application/json','X-User-Id':user.id,'X-Role':user.role,...init?.headers}});const data=await res.json();if(!res.ok)throw new Error(data.error||'Permintaan gagal');return data},[user.id,user.role])
+  const load=useCallback(async()=>{setLoading(true);try{const query=new URLSearchParams({...(search&&{search}),...(status&&{status})});setReports(await request(`/api/reports?${query}`))}catch(e){setMessage((e as Error).message)}finally{setLoading(false)}},[request,search,status])
+  useEffect(()=>{Promise.all([fetch('/api/users').then(r=>r.json()),request('/api/categories'),request('/api/locations')]).then(([u,c,l])=>{setUsers(u);setCategories(c);setLocations(l)}).catch(()=>setMessage('Jalankan migrasi dan seed D1 terlebih dahulu.'))},[request])
+  // The report list is intentionally synchronized with role and filter changes.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{void load()},[load])
+  async function createReport(e:FormEvent<HTMLFormElement>){e.preventDefault();const form=e.currentTarget;const fd=new FormData(form);try{const result=await request('/api/reports',{method:'POST',body:JSON.stringify(Object.fromEntries(fd))});setMessage(`Laporan ${result.id} berhasil dibuat.`);form.reset();await load()}catch(err){setMessage((err as Error).message)}}
+  async function action(id:string,path:string,method='PATCH',body?:object){try{await request(`/api/reports/${id}/${path}`,{method,body:body?JSON.stringify(body):undefined});setMessage('Status berhasil diperbarui.');load()}catch(e){setMessage((e as Error).message)}}
+  return <div className="app-shell">
+    <header><div><span className="eyebrow">CAMPUS CARE</span><h1>Pusat Pemeliharaan Kampus</h1><p>Laporkan, pantau, dan selesaikan gangguan fasilitas dalam satu alur.</p></div><label className="role">Masuk sebagai<select value={user.id} onChange={e=>setUser(users.find(u=>u.id===e.target.value)||fallbackUsers[0])}>{users.map(u=><option key={u.id} value={u.id}>{u.name} · {u.role}</option>)}</select></label></header>
+    {message&&<div className="notice" role="status">{message}<button onClick={()=>setMessage('')}>×</button></div>}
+    <main>
+      <section className="toolbar"><div><h2>Daftar laporan</h2><p>{reports.length} laporan terlihat untuk peran {user.role}</p></div><div className="filters"><input aria-label="Cari laporan" placeholder="Cari ID atau judul…" value={search} onChange={e=>setSearch(e.target.value)}/><select aria-label="Filter status" value={status} onChange={e=>setStatus(e.target.value)}><option value="">Semua status</option>{['SUBMITTED','UNDER_REVIEW','ASSIGNED','IN_PROGRESS','RESOLVED','CLOSED'].map(s=><option key={s}>{s}</option>)}</select></div></section>
+      {user.role==='PELAPOR'&&<section className="panel"><h2>Buat laporan baru</h2><form onSubmit={createReport} className="report-form"><label>Judul<input name="title" required minLength={5}/></label><label>Kontak<input name="reporter_contact" required placeholder="0812 3456 7890"/></label><label className="wide">Deskripsi<textarea name="description" required minLength={20}/></label><label>Lokasi<select name="location_id" required><option value="">Pilih lokasi</option>{locations.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label><label>Kategori<select name="category_id" required><option value="">Pilih kategori</option>{categories.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label><label className="wide">Detail lokasi<input name="location_detail" placeholder="Contoh: Lantai 2, ruang 204"/></label><button className="primary" type="submit">Kirim laporan</button></form></section>}
+      <section className="cards">{loading?<p className="empty">Memuat laporan…</p>:reports.length===0?<p className="empty">Belum ada laporan yang sesuai.</p>:reports.map(r=><article key={r.id} className="card"><div className="card-top"><span className={`status ${r.status.toLowerCase()}`}>{r.status.replaceAll('_',' ')}</span><span className="priority">{r.current_priority}</span></div><h3>{r.title}</h3><p>{r.description}</p><dl><div><dt>ID</dt><dd>{r.id}</dd></div><div><dt>Lokasi</dt><dd>{r.location_name}</dd></div><div><dt>Kategori</dt><dd>{r.category_name}</dd></div></dl><div className="actions">{user.role==='ADMIN'&&r.status==='SUBMITTED'&&<button onClick={()=>action(r.id,'review')}>Mulai review</button>}{['ADMIN','MANAJER'].includes(user.role)&&r.status==='UNDER_REVIEW'&&<button onClick={()=>action(r.id,'assign','POST',{technician_id:'usr-tech'})}>Tugaskan teknisi</button>}{user.role==='TEKNISI'&&r.status==='ASSIGNED'&&<button onClick={()=>action(r.id,'accept')}>Terima tugas</button>}{user.role==='TEKNISI'&&r.status==='IN_PROGRESS'&&<button onClick={()=>action(r.id,'resolve')}>Tandai selesai</button>}{['PELAPOR','ADMIN'].includes(user.role)&&r.status==='RESOLVED'&&<button onClick={()=>action(r.id,'close')}>Tutup laporan</button>}</div></article>)}</section>
+    </main><footer>Campus Maintenance · React + Cloudflare Workers + D1</footer>
+  </div>
 }
-
-export default App

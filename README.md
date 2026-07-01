@@ -4,7 +4,7 @@ Repository proyek **Campus Service Request and Maintenance System** untuk mata k
 
 ## Status
 
-Fondasi repository menggunakan React, TypeScript, Vite, Cloudflare Workers, dan Wrangler. Requirement Step 1–5 telah divalidasi. Proyek dihentikan sementara setelah Step 5 sesuai keputusan project owner; Step 6 dan implementasi fitur belum dimulai.
+Baseline MVP menggunakan React, TypeScript, Vite, Hono, Cloudflare Workers, D1, Wrangler, dan Vitest. Step 1–14 telah dikerjakan; deployment production dicatat pada Step 15.
 
 ## Menjalankan Proyek
 
@@ -18,6 +18,7 @@ npm run dev
 ```bash
 npm run lint
 npm run build
+npm test
 ```
 
 ## Struktur Utama
@@ -39,4 +40,4 @@ Belum dilakukan. URL Cloudflare akan dicantumkan setelah tahap deployment selesa
 
 ## Known Limitations
 
-Repository masih berupa scaffold runtime. Requirement sudah divalidasi, tetapi database, API, UI, fitur bisnis, automated test, dan deployment belum dibuat.
+Autentikasi menggunakan role selector dan pengguna dummy untuk demonstrasi akademik, bukan untuk produksi nyata. Upload, email, QR, inventory, vendor, dan aplikasi native tetap di luar baseline.

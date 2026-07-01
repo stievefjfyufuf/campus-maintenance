@@ -7,7 +7,7 @@
 | Proyek | Campus Service Request and Maintenance System |
 | Tahap | 07 - Database & API Design |
 | Tipe | Human review record |
-| Status | **Menunggu review — BELUM DISETUJUI** |
+| Status | **Disetujui setelah koreksi CR-005** |
 | Tanggal dibuat | 1 Juli 2026 |
 | Reviewer | Stieve - Project owner/stakeholder proxy |
 | Artifact yang direview | `docs/software-engineering/07-database-api-design.md` |
@@ -59,9 +59,9 @@ Reviewer diharapkan meninjau poin-poin berikut sebelum memberikan approval:
 
 | Field | Nilai |
 |---|---|
-| Status | Menunggu review |
-| Approved by | — |
-| Approval date | — |
-| Approval statement | — |
+| Status | Approved |
+| Approved by | Stieve — Project owner/stakeholder proxy |
+| Approval date | 1 Juli 2026 |
+| Approval statement | “ok langsung aja anda eksekusi saja kalau saya setuju semua” |
 
-**PENTING:** Dokumen ini tidak dapat dianggap disetujui sebelum reviewer memberikan pernyataan eksplisit. Step 8 (UI Design) tidak boleh dimulai sebelum approval diberikan dan dicatat di sini.
+Approval mencakup koreksi status, HTTP 201, penomoran API, dan constraint satu assignment aktif melalui CR-005. Step 8 dapat dimulai.

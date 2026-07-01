@@ -16,6 +16,14 @@
 	"upload_source_maps": true,
 	"compatibility_flags": [
 		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "campus-maintenance",
+			"database_id": "2109ba76-8bd0-41f6-a376-cb069c932aaa",
+			"migrations_dir": "database/migrations"
+		}
 	]
 	/**
 	 * Smart Placement

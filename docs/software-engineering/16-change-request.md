@@ -16,3 +16,4 @@
 | CR-002 | Synchronize Step 1–5 baseline, evidence, and reusable skill | Documentation correction / evidence governance | Stieve | Approved and applied | Steps 1–5 at commit `97b8e29` | `changes/CR-002.md` |
 | CR-003 | Remove unapproved Step 6 draft and pause lifecycle after Step 5 | Removal / scope sequencing | Stieve | Approved and applied | Step 6 draft at commit `a7a205e` | `changes/CR-003.md` |
 | CR-004 | Close final Step 1–5 quality and reproducibility findings | Documentation correction / build maintenance | Stieve | Approved and applied | Steps 1–5 at commit `1c0777e` | `changes/CR-004.md` |
+| CR-005 | Correct Step 7 and execute the approved delivery lifecycle | Bug fix / delivery continuation | Stieve | Approved and in progress | Approved Steps 1–6 and Step 7 draft | `changes/CR-005.md` |

@@ -1,0 +1,15 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE users (id TEXT PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('PELAPOR','ADMIN','TEKNISI','MANAJER')), email TEXT NOT NULL UNIQUE, is_active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE categories (id TEXT PRIMARY KEY, name TEXT NOT NULL UNIQUE, description TEXT, is_active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE locations (id TEXT PRIMARY KEY, name TEXT NOT NULL UNIQUE, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE reports (id TEXT PRIMARY KEY, title TEXT NOT NULL, description TEXT NOT NULL, location_id TEXT NOT NULL REFERENCES locations(id), location_detail TEXT, category_id TEXT NOT NULL REFERENCES categories(id), initial_priority TEXT NOT NULL CHECK(initial_priority IN ('LOW','MEDIUM','HIGH','URGENT')), current_priority TEXT NOT NULL CHECK(current_priority IN ('LOW','MEDIUM','HIGH','URGENT')), status TEXT NOT NULL DEFAULT 'SUBMITTED' CHECK(status IN ('SUBMITTED','UNDER_REVIEW','ASSIGNED','IN_PROGRESS','RESOLVED','CLOSED')), reporter_id TEXT NOT NULL REFERENCES users(id), reporter_contact TEXT NOT NULL, due_time TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, resolved_at TEXT, closed_at TEXT);
+CREATE TABLE assignments (id TEXT PRIMARY KEY, report_id TEXT NOT NULL REFERENCES reports(id), technician_id TEXT NOT NULL REFERENCES users(id), assigned_by TEXT NOT NULL REFERENCES users(id), status TEXT NOT NULL DEFAULT 'PENDING' CHECK(status IN ('PENDING','ACCEPTED','INACTIVE')), reason TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, accepted_at TEXT, ended_at TEXT);
+CREATE UNIQUE INDEX one_active_assignment_per_report ON assignments(report_id) WHERE status IN ('PENDING','ACCEPTED');
+CREATE TABLE progress_updates (id TEXT PRIMARY KEY, report_id TEXT NOT NULL REFERENCES reports(id), technician_id TEXT NOT NULL REFERENCES users(id), notes TEXT NOT NULL, action_taken TEXT NOT NULL, obstacles TEXT, estimated_completion TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE comments (id TEXT PRIMARY KEY, report_id TEXT NOT NULL REFERENCES reports(id), author_id TEXT NOT NULL REFERENCES users(id), content TEXT NOT NULL, type TEXT NOT NULL CHECK(type IN ('PUBLIC','INTERNAL')), created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE audit_events (id TEXT PRIMARY KEY, report_id TEXT NOT NULL REFERENCES reports(id), actor_id TEXT NOT NULL REFERENCES users(id), event_type TEXT NOT NULL, old_value TEXT, new_value TEXT NOT NULL, reason TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE INDEX idx_reports_status ON reports(status);
+CREATE INDEX idx_reports_reporter ON reports(reporter_id);
+CREATE INDEX idx_reports_category ON reports(category_id);
+CREATE INDEX idx_comments_report ON comments(report_id);
+CREATE INDEX idx_audit_report ON audit_events(report_id);

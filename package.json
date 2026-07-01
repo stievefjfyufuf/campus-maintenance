@@ -9,9 +9,11 @@
     "lint": "eslint .",
     "preview": "npm run build && vite preview",
     "deploy": "npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
+    "hono": "^4.12.27",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },
@@ -29,6 +31,7 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
+    "vitest": "^4.1.9",
     "wrangler": "^4.105.0"
   }
 }

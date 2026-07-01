@@ -6,14 +6,14 @@
 |---|---|
 | Proyek | Campus Service Request and Maintenance System |
 | Tahap | 06 - Architecture Design |
-| Status | **Draft untuk human review** |
+| Status | **Approved / Baseline** |
 | Tanggal dibuat | 1 Juli 2026 |
 | Human reviewer | Stieve - Project owner/stakeholder proxy |
 | Upstream | `docs/software-engineering/03-specification.md`, `docs/software-engineering/05-validation-change.md` |
 | Downstream | `docs/software-engineering/07-database-api-design.md` |
 | Disetujui baseline | Step 1–5 commit `129b6fa` |
 
-Dokumen ini merupakan **draft awal** dan belum dapat dianggap disetujui. Human review oleh Stieve diperlukan sebelum artifact ini menjadi baseline untuk Step 7.
+Dokumen ini telah disetujui oleh Stieve pada 1 Juli 2026 dan menjadi baseline resmi untuk tahap berikutnya.
 
 ---
 

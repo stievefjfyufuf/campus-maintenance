@@ -1,3 +1,8 @@
+---
+name: 01-inception-stakeholder
+description: Define the Campus Maintenance problem, goals, stakeholders, scope, assumptions, constraints, risks, success signals, and open questions before detailed requirements. Use when starting or revisiting Step 1 discovery and preparing an approved handoff to elicitation.
+---
+
 # Inception dan Stakeholder
 
 ## Tujuan

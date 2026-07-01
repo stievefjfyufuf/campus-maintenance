@@ -1,0 +1,4 @@
+interface:
+  display_name: "Campus Maintenance Elicitation"
+  short_description: "Capture traceable stakeholder needs"
+  default_prompt: "Use $02-elicitation to gather and trace Campus Maintenance stakeholder needs and unresolved decisions."

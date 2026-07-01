@@ -1,0 +1,4 @@
+interface:
+  display_name: "Campus Maintenance Inception"
+  short_description: "Define project scope and stakeholders"
+  default_prompt: "Use $01-inception-stakeholder to define the Campus Maintenance problem, scope, stakeholders, and open questions."

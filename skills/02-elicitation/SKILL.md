@@ -1,3 +1,8 @@
+---
+name: 02-elicitation
+description: Elicit and record Campus Maintenance stakeholder answers, raw needs, ambiguities, conflicts, constraints, and decisions with traceability to Step 1. Use when conducting or revising Step 2 interviews, questionnaires, document analysis, and the handoff to specification.
+---
+
 # Elicitation
 
 ## Tujuan

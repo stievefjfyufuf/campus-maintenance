@@ -1,6 +1,10 @@
 export const roles = ['PELAPOR', 'ADMIN', 'TEKNISI', 'MANAJER'] as const
 export type Role = (typeof roles)[number]
 
+export function normalizeRole(value: unknown): Role {
+  return typeof value === 'string' && roles.includes(value as Role) ? value as Role : 'PELAPOR'
+}
+
 export const statuses = ['SUBMITTED', 'UNDER_REVIEW', 'ASSIGNED', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'] as const
 export type ReportStatus = (typeof statuses)[number]
 

@@ -62,3 +62,6 @@ CR-008 reuses TEST-001–026 as the runtime regression suite and adds release ch
 # CR-009 Test Plan Addendum
 
 Regression scope includes TEST-001–026 plus UAT checks for the OAuth-unconfigured state, demo entry, theme persistence, role workspace headings, admin dashboard authorization, responsive layout, build, and production smoke. A real Google callback is blocked until the project owner supplies Google OAuth credentials as Cloudflare secrets.
+# CR-010 Test Plan Addendum
+
+TEST-027–029 verify supported, invalid, and missing OAuth demo roles. Production UAT verifies role selection before login, selected ADMIN workspace, absence of in-app role switching, logout return to login, API health, OAuth configuration state, and daily uptime workflow syntax.

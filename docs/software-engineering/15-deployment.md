@@ -86,3 +86,14 @@ REL-003 deployed successfully on 2 July 2026 to `https://campus-maintenance.stie
 - Rollback: Cloudflare version `fb4c4545-7f09-4560-bca4-fe2598780926` (REL-002); no D1 rollback required.
 
 REL-003 is the active runtime baseline for the polished academic demo. Google OAuth credential activation is a pending operational configuration item, not a hidden pass.
+# REL-004 — CR-010 Role-First Login and Backend Hardening
+
+REL-004 deployed on 2 July 2026.
+
+- URL: `https://campus-maintenance.stievefjfyufuf.workers.dev`
+- Worker version: `f5bcdd73-f189-406c-8f1d-6c43ccf7fee8`
+- Tests: 29/29 pass; lint 0 errors; build pass.
+- Production UAT: role-first ADMIN entry, locked active-role badge, dashboard, D1-backed UI, logout, and backend health pass.
+- Availability: Workers URL has no one-month expiry. A daily GitHub Actions health check monitors the page and API; Cloudflare/GitHub account status remains an external dependency.
+- Google OAuth: deployed and role-aware, but not active until `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` Worker secrets are supplied.
+- Rollback: REL-003 version `e1d73d06-c410-4256-811b-99a38e7d37a1`; no D1 rollback required.

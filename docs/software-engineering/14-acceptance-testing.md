@@ -69,3 +69,14 @@ Decision: **accepted**. REL-002 behavior remains unchanged.
 - [ ] Real Google account callback: blocked pending `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` secrets.
 
 Decision: **accepted with one external-configuration note**. The deployed academic demo is usable; Google OAuth activation remains pending credentials.
+# CR-010 Acceptance Addendum
+
+- [x] Role selector appears before the Google action.
+- [x] Selecting ADMIN changes the demo entry action and opens the ADMIN workspace.
+- [x] Active role is displayed but cannot be switched inside the workspace.
+- [x] Logout returns to the login screen.
+- [x] Backend health responds successfully in production.
+- [x] OAuth configuration reports disabled while credentials are absent instead of failing silently.
+- [ ] Real Google account selection/callback remains pending user-owned Google credentials.
+
+Decision: **accepted with external credential blocker recorded**.

@@ -87,3 +87,6 @@ CR-008 made no runtime implementation change. Obsolete `.gitkeep` placeholders w
 # CR-009 / ISSUE-012 Implementation Addendum
 
 Changed `src/App.tsx`, `src/App.css`, `src/index.css`, and `worker/index.ts`. Added a login landing surface, OAuth configuration/login/callback/session/logout routes, persistent dark mode, Google profile display, demo role selection, role-specific workspace headings/KPIs, and a responsive visual system. Existing report lifecycle endpoints and D1 schema remain unchanged. OAuth secrets are not stored in source control.
+# CR-010 Implementation Addendum
+
+Added role-first login in `src/App.tsx`, supporting styles in `src/App.css`, role normalization in `worker/domain.ts`, OAuth role transport in `worker/index.ts`, TEST-027–029, and a daily GitHub Actions Cloudflare health check. Logout clears the Google session cookie and returns to login. Core report workflow and D1 schema remain unchanged.

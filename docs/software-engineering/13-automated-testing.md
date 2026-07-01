@@ -59,3 +59,12 @@ Wrangler could not write its optional debug log outside the workspace sandbox, b
 | `npm.cmd run build` | Pass: Worker and client production bundles |
 
 The existing domain and dashboard regression suite passes unchanged, confirming the REL-002 workflow remains compatible.
+# CR-010 Automated Testing Addendum
+
+| Gate | Result |
+|---|---|
+| `npm.cmd test` | Pass: 2 files, 29/29 tests |
+| `npm.cmd run lint` | Pass: 0 errors, 2 generated warnings |
+| `npm.cmd run build` | Pass: Worker and client bundles |
+| Production `/api/health` | Pass: `{ "ok": true }` |
+| Production `/api/auth/config` | Pass: `{ "googleEnabled": false }`, correctly reflecting missing secrets |

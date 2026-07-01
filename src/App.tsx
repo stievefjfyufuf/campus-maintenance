@@ -9,7 +9,7 @@ import {
 } from './dashboard'
 
 type User = { id: string; name: string; role: string }
-type GoogleProfile = { name: string; email: string; picture?: string }
+type GoogleProfile = { name: string; email: string; picture?: string; role?: string }
 type Option = { id: string; name: string }
 type Report = {
   id: string
@@ -32,10 +32,10 @@ export default function App() {
   const [entered, setEntered] = useState(false)
   const [googleEnabled, setGoogleEnabled] = useState(false)
   const [profile, setProfile] = useState<GoogleProfile | null>(null)
+  const [selectedRole, setSelectedRole] = useState('PELAPOR')
   const [theme, setTheme] = useState<'light' | 'dark'>(() =>
     localStorage.getItem('campus-theme') === 'dark' ? 'dark' : 'light',
   )
-  const [users, setUsers] = useState<User[]>(fallbackUsers)
   const [user, setUser] = useState<User>(fallbackUsers[0])
   const [reports, setReports] = useState<Report[]>([])
   const [categories, setCategories] = useState<Option[]>([])
@@ -63,6 +63,11 @@ export default function App() {
       setGoogleEnabled(Boolean(config.googleEnabled))
       if (session.authenticated) {
         setProfile(session.profile)
+        const sessionUser = fallbackUsers.find((item) => item.role === session.profile.role)
+        if (sessionUser) {
+          setSelectedRole(sessionUser.role)
+          setUser(sessionUser)
+        }
         setEntered(true)
       }
     }).catch(() => setGoogleEnabled(false))
@@ -121,13 +126,8 @@ export default function App() {
   }, [canViewDashboard, request])
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/users').then((response) => response.json()),
-      request('/api/categories'),
-      request('/api/locations'),
-    ])
-      .then(([nextUsers, nextCategories, nextLocations]) => {
-        setUsers(nextUsers)
+    Promise.all([request('/api/categories'), request('/api/locations')])
+      .then(([nextCategories, nextLocations]) => {
         setCategories(nextCategories)
         setLocations(nextLocations)
       })
@@ -194,12 +194,18 @@ export default function App() {
           <h1>Fasilitas kampus, tertangani dengan jelas.</h1>
           <p>Masuk untuk melaporkan gangguan, menangani tugas, atau memantau layanan fasilitas dalam satu ruang kerja.</p>
           <div className="auth-actions">
-            <a className={`google-button ${!googleEnabled ? 'disabled' : ''}`} href={googleEnabled ? '/api/auth/google' : undefined} aria-disabled={!googleEnabled}>
+            <label className="login-role">
+              Masuk sebagai
+              <select value={selectedRole} onChange={(event) => setSelectedRole(event.target.value)}>
+                {fallbackUsers.map((item) => <option key={item.role} value={item.role}>{item.role === 'PELAPOR' ? 'Pelapor' : item.role === 'ADMIN' ? 'Administrator' : item.role === 'TEKNISI' ? 'Teknisi' : 'Manajer fasilitas'}</option>)}
+              </select>
+            </label>
+            <a className={`google-button ${!googleEnabled ? 'disabled' : ''}`} href={googleEnabled ? `/api/auth/google?role=${selectedRole}` : undefined} aria-disabled={!googleEnabled}>
               <span className="google-mark">G</span> Lanjutkan dengan Google
             </a>
             {!googleEnabled && <small>Google OAuth menunggu Client ID dan Client Secret di Cloudflare.</small>}
             <div className="divider"><span>atau</span></div>
-            <button className="demo-button" onClick={() => setEntered(true)}>Masuk ke demo interaktif</button>
+            <button className="demo-button" onClick={() => { setUser(fallbackUsers.find((item) => item.role === selectedRole) || fallbackUsers[0]); setEntered(true) }}>Masuk ke demo sebagai {selectedRole === 'PELAPOR' ? 'Pelapor' : selectedRole === 'ADMIN' ? 'Administrator' : selectedRole === 'TEKNISI' ? 'Teknisi' : 'Manajer'}</button>
           </div>
           <p className="auth-note">Mode demo menggunakan data sintetis dan pemilihan role untuk kebutuhan penilaian akademik.</p>
         </section>
@@ -219,21 +225,7 @@ export default function App() {
         <div className="topbar-actions">
           <button className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Ganti tema">{theme === 'dark' ? '☀' : '☾'}</button>
           {profile && <div className="profile-chip">{profile.picture && <img src={profile.picture} alt="" />}<span><strong>{profile.name}</strong><small>{profile.email}</small></span></div>}
-          <label className="role">
-          Pilih role demo
-          <select
-            value={user.id}
-            onChange={(event) =>
-              setUser(users.find((item) => item.id === event.target.value) || fallbackUsers[0])
-            }
-          >
-            {users.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name} · {item.role}
-              </option>
-            ))}
-          </select>
-        </label>
+          <div className="role-chip"><small>Role aktif</small><strong>{user.role}</strong></div>
           <button className="logout-button" onClick={() => { setEntered(false); setProfile(null); void fetch('/api/auth/logout', { method: 'POST' }) }}>Keluar</button>
         </div>
       </header>

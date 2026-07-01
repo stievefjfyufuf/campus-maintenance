@@ -149,3 +149,6 @@ Failed requests retain the current role and filters, announce a concise error in
 # CR-009 UI Addendum — REL-003
 
 `UI-006` adds a split login landing page with Google OAuth availability state and explicit academic demo fallback. `UI-007` adds a persistent light/dark theme control. `UI-008` adds role-oriented workspace headings and KPI cards for PELAPOR, ADMIN, TEKNISI, and MANAJER while preserving the existing workflow actions. The layout is responsive and keeps labeled controls, focus indicators, loading, empty, error, and success states.
+# CR-010 UI Addendum
+
+`UI-009` places a required role selector directly above the Google action on the login screen. Google and demo entry use the same selected role. The authenticated header shows a non-editable active-role badge; changing role requires the visible Logout action and a new login, preventing accidental context switching mid-workflow.

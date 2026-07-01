@@ -6,7 +6,7 @@ Repository **Campus Service Request and Maintenance System** untuk mata kuliah S
 
 [Buka aplikasi Campus Maintenance](https://campus-maintenance.stievefjfyufuf.workers.dev)
 
-Baseline aktif adalah **REL-003** dengan React, TypeScript, Vite, Hono, Cloudflare Workers, D1, Wrangler, dan Vitest.
+Baseline aktif adalah **REL-004** dengan React, TypeScript, Vite, Hono, Cloudflare Workers, D1, Wrangler, dan Vitest.
 
 REL-003 mencakup:
 
@@ -48,6 +48,7 @@ Pada PowerShell Windows gunakan `npm.cmd` bila `npm.ps1` diblokir execution poli
 - REL-001: baseline MVP.
 - REL-002: dashboard admin/manajer dan regression coverage.
 - REL-003: modern UI, dark mode, login landing, role workspaces, dan OAuth routes.
+- REL-004: pemilihan role sebelum login, role-aware OAuth state, logout yang diverifikasi, 29 test, dan pemeriksaan uptime harian.
 
 ## Google Login
 

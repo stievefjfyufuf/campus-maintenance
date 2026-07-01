@@ -21,3 +21,4 @@
 | CR-007 | Fill repository placeholder documentation and local skill files | Documentation completion / repository hygiene | Stieve | Approved and applied; documentation-only | REL-002 documentation only | `changes/CR-007.md` |
 | CR-008 | Remove obsolete placeholders, complete test folders, and verify Cloudflare demo | Repository hygiene / release verification | Stieve | Approved and applied; runtime unchanged | REL-002 documentation and verification | `changes/CR-008.md` |
 | CR-009 | Modernize UI, add dark mode, role dashboards, and Google OAuth entry | Feature addition / UI modernization | Stieve | Applied in REL-003; Google credentials pending | REL-002 → REL-003 | `changes/CR-009.md` |
+| CR-010 | Select role before Google login, preserve role, and harden logout/backend | Authentication UX correction / operational hardening | Stieve | Applied in REL-004; Google credentials pending | REL-003 → REL-004 | `changes/CR-010.md` |

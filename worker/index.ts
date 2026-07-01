@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import type { Context } from 'hono'
-import { addBusinessDays, canTransition, newId, roles, validateReport, type ReportStatus, type Role } from './domain'
+import { addBusinessDays, canTransition, newId, normalizeRole, roles, validateReport, type ReportStatus, type Role } from './domain'
 
 type Bindings = { DB: D1Database; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string }
 type Variables = { userId: string; role: Role }
@@ -28,6 +28,7 @@ app.get('/api/auth/google', (c) => {
   if (!c.env.GOOGLE_CLIENT_ID || !c.env.GOOGLE_CLIENT_SECRET) {
     return c.json({ error: 'Google Login belum dikonfigurasi. Gunakan mode demo.' }, 503)
   }
+  const selectedRole = normalizeRole(c.req.query('role'))
   const state = crypto.randomUUID()
   const callback = `${new URL(c.req.url).origin}/api/auth/google/callback`
   const query = new URLSearchParams({
@@ -38,14 +39,15 @@ app.get('/api/auth/google', (c) => {
     state,
     prompt: 'select_account',
   })
-  c.header('Set-Cookie', `cm_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`)
+  c.header('Set-Cookie', `cm_oauth_state=${state}.${selectedRole}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`)
   return c.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${query}`)
 })
 app.get('/api/auth/google/callback', async (c) => {
   const code = c.req.query('code')
   const state = c.req.query('state')
   const savedState = c.req.header('Cookie')?.match(/(?:^|; )cm_oauth_state=([^;]+)/)?.[1]
-  if (!code || !state || state !== savedState || !c.env.GOOGLE_CLIENT_ID || !c.env.GOOGLE_CLIENT_SECRET) {
+  const [expectedState, savedRole] = savedState?.split('.') ?? []
+  if (!code || !state || state !== expectedState || !roles.includes(savedRole as Role) || !c.env.GOOGLE_CLIENT_ID || !c.env.GOOGLE_CLIENT_SECRET) {
     return c.redirect('/?auth=failed')
   }
   const callback = `${new URL(c.req.url).origin}/api/auth/google/callback`
@@ -59,7 +61,7 @@ app.get('/api/auth/google/callback', async (c) => {
   const profileResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', { headers: { Authorization: `Bearer ${token.access_token}` } })
   if (!profileResponse.ok) return c.redirect('/?auth=failed')
   const profile = await profileResponse.json<{ email: string; name: string; picture?: string }>()
-  const session = btoa(unescape(encodeURIComponent(JSON.stringify({ email: profile.email, name: profile.name, picture: profile.picture }))))
+  const session = btoa(unescape(encodeURIComponent(JSON.stringify({ email: profile.email, name: profile.name, picture: profile.picture, role: savedRole }))))
   c.header('Set-Cookie', `cm_google=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`)
   return c.redirect('/?auth=google')
 })

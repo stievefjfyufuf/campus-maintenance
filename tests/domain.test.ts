@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { addBusinessDays, canTransition, newId, validateReport } from '../worker/domain'
+import { addBusinessDays, canTransition, newId, normalizeRole, validateReport } from '../worker/domain'
 
 const valid = { title:'Proyektor rusak', description:'Proyektor ruang kelas tidak dapat dinyalakan.', location_id:'loc-a', category_id:'cat-electric', reporter_contact:'0812 3456 7890' }
 
@@ -30,4 +30,10 @@ describe('dates and identifiers', () => {
   it('TEST-018 creates traceable report IDs',()=>expect(newId('REP',new Date('2026-07-01T00:00:00Z'))).toMatch(/^REP-20260701-[A-F0-9]{8}$/))
   it('TEST-019 skips a weekend',()=>expect(addBusinessDays(new Date('2026-07-03T00:00:00Z'),1).toISOString().slice(0,10)).toBe('2026-07-06'))
   it('TEST-020 adds five weekdays across weekend',()=>expect(addBusinessDays(new Date('2026-07-01T00:00:00Z'),5).toISOString().slice(0,10)).toBe('2026-07-08'))
+})
+
+describe('OAuth demo role selection', () => {
+  it('TEST-027 preserves a supported role', () => expect(normalizeRole('TEKNISI')).toBe('TEKNISI'))
+  it('TEST-028 defaults an unknown role to reporter', () => expect(normalizeRole('SUPER_ADMIN')).toBe('PELAPOR'))
+  it('TEST-029 defaults a missing role to reporter', () => expect(normalizeRole(undefined)).toBe('PELAPOR'))
 })
